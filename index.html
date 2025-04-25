@@ -58,6 +58,19 @@
             z-index: -2;
         }
 
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSIjMDAwIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDVMNSAwWk02IDRMNCA2Wk0tMSAxTDEgLTFaIiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMSI+PC9wYXRoPgo8L3N2Zz4=');
+            opacity: 0.03;
+            z-index: -1;
+            pointer-events: none;
+        }
+
         .purple-orb {
             position: fixed;
             border-radius: 50%;
@@ -89,18 +102,18 @@
             top: 0px;
             right: 0;
             left: 64px;
-            height: 80px; /* Increased height */
-            background: rgba(20, 20, 41, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            height: 80px;
+            background: linear-gradient(90deg, rgba(20, 20, 41, 0.98) 0%, rgba(37, 29, 86, 0.98) 100%);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 32px; /* Increased padding */
+            padding: 0 32px;
             z-index: 100;
             transition: left 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .navbar-brand {
@@ -108,6 +121,7 @@
             align-items: center;
             text-decoration: none;
             color: var(--text-primary);
+            margin-left: 160px; /* Increased margin to move logo further right */
         }
 
         .logo-container {
@@ -116,19 +130,42 @@
             text-decoration: none;
             height: 80px;
             padding: 8px 0;
+            position: relative;
+        }
+
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-container:hover::after {
+            opacity: 1;
         }
 
         .logo-image {
             height: 50px;
             width: auto;
             display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container:hover .logo-image {
+            transform: translateY(-2px);
         }
 
         .navbar-nav {
             display: flex;
-            gap: 40px; /* Increased gap */
+            gap: 40px;
             margin-left: auto;
             margin-right: auto;
+            position: relative;
         }
 
         .nav-link {
@@ -136,28 +173,36 @@
             text-decoration: none;
             font-size: 15px;
             font-weight: 500;
-            transition: color 0.2s ease;
-            padding: 8px 0;
+            transition: all 0.2s ease;
+            padding: 8px 16px;
             position: relative;
+            border-radius: 20px;
         }
 
         .nav-link:hover {
             color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link.active {
+            color: white;
+            background: rgba(140, 61, 206, 0.15);
         }
 
         .nav-link::after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 0;
-            width: 0%;
+            left: 50%;
+            width: 0;
             height: 2px;
             background: var(--accent-purple);
-            transition: width 0.3s ease;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
 
         .nav-link:hover::after {
-            width: 100%;
+            width: 80%;
         }
 
         .auth-buttons {
@@ -178,19 +223,20 @@
 
         .btn-login {
             color: var(--text-primary);
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             padding: 9px 20px;
             border-radius: 30px;
         }
 
         .btn-login:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .btn-signup {
-            background: var(--accent-purple);
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-purple-light));
             color: var(--text-primary);
             padding: 10px 24px;
             border-radius: 30px;
@@ -198,7 +244,7 @@
         }
 
         .btn-signup:hover {
-            background: var(--accent-purple-light);
+            background: linear-gradient(90deg, var(--accent-purple-light), var(--accent-purple));
             transform: translateY(-2px);
             box-shadow: 0 6px 16px rgba(140, 61, 206, 0.4);
         }
@@ -210,14 +256,14 @@
             top: 0;
             height: 100vh;
             width: 64px;
-            background: rgba(14, 14, 25, 0.95);
+            background: linear-gradient(180deg, rgba(14, 14, 25, 0.98) 0%, rgba(25, 21, 48, 0.98) 100%);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.07);
             z-index: 1000;
             transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             overflow: hidden;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .sidebar.expanded {
@@ -248,23 +294,31 @@
         .nav-item {
             display: flex;
             align-items: center;
-            height: 40px;
+            height: 44px;
             padding: 0 24px;
             color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.2s ease, background 0.2s ease;
+            transition: all 0.2s ease;
             white-space: nowrap;
             position: relative;
+            margin: 4px 8px;
+            border-radius: 8px;
         }
 
         .nav-item:hover {
             background: rgba(255, 255, 255, 0.08);
             color: var(--text-primary);
+            transform: translateX(4px);
         }
 
         .nav-item.active {
+            color: var(--text-primary);
+            background: linear-gradient(90deg, rgba(140, 61, 206, 0.2), rgba(140, 61, 206, 0.05));
+            border-left: 3px solid var(--accent-purple);
+        }
+
+        .nav-item.active i {
             color: var(--accent-purple);
-            background: rgba(140, 61, 206, 0.15);
         }
 
         .nav-item i {
@@ -466,6 +520,7 @@
             margin-left: 64px;
             margin-top: 80px; /* Adjusted for taller navbar */
             padding: 32px; /* Increased padding */
+            padding-bottom: 60px; /* Added padding to ensure space before footer */
             transition: margin 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             background: var(--dark-bg);
             position: relative;
@@ -522,21 +577,144 @@
             object-fit: cover;
         }
 
-        .register-btn {
-            background: var(--gold);
+        /* Enhanced Button Styling */
+        .btn-primary {
+            background: linear-gradient(90deg, #FFD700, #F5C211);
             color: #000;
             font-weight: 600;
-            padding: 12px 24px;
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+            z-index: 3;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #F5C211, #FFD700);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-purple-light));
+            color: white;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(140, 61, 206, 0.3);
+            border: 1px solid rgba(140, 61, 206, 0.6);
+            position: relative;
+            overflow: hidden;
+            z-index: 3;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(90deg, var(--accent-purple-light), var(--accent-purple));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(140, 61, 206, 0.4);
+        }
+
+        .btn-secondary:hover::before {
+            left: 100%;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 9px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 3;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-outline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline:hover::before {
+            left: 100%;
+        }
+
+        /* Updated button classes */
+        .register-btn {
+            background: linear-gradient(90deg, #FFD700, #F5C211);
+            color: #000;
+            font-weight: 700;
+            padding: 16px 30px;
             border-radius: 30px;
             text-align: center;
             text-decoration: none;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
             display: inline-block;
             width: 100%;
+            max-width: 300px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
             position: relative;
             overflow: hidden;
+            letter-spacing: 0.5px;
+            z-index: 2;
+            border: 1px solid rgba(255, 215, 0, 0.6);
         }
 
         .register-btn::before {
@@ -546,131 +724,228 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
             transition: left 0.7s ease;
         }
 
         .register-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 215, 0, 0.5);
+            background: linear-gradient(90deg, #F5C211, #FFD700);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 215, 0, 0.6);
         }
 
         .register-btn:hover::before {
             left: 100%;
         }
 
-        .login-options {
-            text-align: center;
-        }
-
-        .login-options p {
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
-
-        .login-providers {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .provider-btn {
-            background: rgba(255, 255, 255, 0.1);
+        .btn-login {
             color: var(--text-primary);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 10px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-
-        .provider-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Promo Banner */
-        .promo-banner {
-            background: linear-gradient(90deg, rgba(50, 18, 122, 0.8) 0%, rgba(98, 58, 159, 0.8) 100%);
-            border-radius: 12px;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 9px 20px;
+            border-radius: 30px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-        .promo-banner::before {
+        .btn-login::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('https://via.placeholder.com/1200x200/32127A/FFFFFF?text=');
-            background-size: cover;
-            opacity: 0.2;
-            z-index: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: all 0.5s ease;
         }
 
-        .promo-content {
+        .btn-login:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .btn-signup {
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-purple-light));
+            color: var(--text-primary);
+            padding: 10px 24px;
+            border-radius: 30px;
+            box-shadow: 0 4px 12px rgba(140, 61, 206, 0.3);
+            border: 1px solid rgba(140, 61, 206, 0.6);
             position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            gap: 20px;
+            overflow: hidden;
         }
 
-        .promo-content h2 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #FFD700;
+        .btn-signup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn-signup:hover {
+            background: linear-gradient(90deg, var(--accent-purple-light), var(--accent-purple));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(140, 61, 206, 0.4);
+        }
+
+        .btn-signup:hover::before {
+            left: 100%;
         }
 
         .learn-more-btn {
-            background: #FFD700;
+            background: linear-gradient(90deg, #FFD700, #F5C211);
+            color: #000;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+            z-index: 3;
+            display: inline-block;
+        }
+
+        .learn-more-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .learn-more-btn:hover {
+            background: linear-gradient(90deg, #F5C211, #FFD700);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .learn-more-btn:hover::before {
+            left: 100%;
+        }
+
+        .deposit-btn {
+            background: linear-gradient(90deg, #FFD700, #F5C211);
             color: #000;
             font-weight: 600;
             padding: 8px 16px;
             border-radius: 20px;
             text-decoration: none;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-
-        .learn-more-btn:hover {
-            background: #f8c915;
-            transform: translateY(-2px);
-        }
-
-        .countdown {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .raffle-tickets {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
             position: relative;
-            z-index: 1;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.6);
         }
 
-        .ticket-counter {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.1);
+        .deposit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .deposit-btn:hover {
+            background: linear-gradient(90deg, #F5C211, #FFD700);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
+        }
+
+        .deposit-btn:hover::before {
+            left: 100%;
+        }
+
+        .logout-btn {
+            color: var(--text-secondary);
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
             padding: 8px 16px;
             border-radius: 20px;
-            color: var(--text-primary);
+            transition: all 0.3s ease;
             font-size: 14px;
-            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-btn:hover::before {
+            left: 100%;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: all 0.5s ease;
+            border-radius: 50%;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon-btn:hover::before {
+            left: 100%;
         }
 
         /* Category Cards */
@@ -823,25 +1098,45 @@
         }
 
         .game-item {
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            background: #181830; /* Exact color match from reference */
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #1a1a36 0%, #131329 100%);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             cursor: pointer;
             position: relative;
-            border: 0px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            margin: 0 auto 16px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            margin: 0 auto 24px;
             width: 100%;
             max-width: 150px; /* Width from reference */
             height: 250px; /* Fixed height to match reference */
             display: flex;
             flex-direction: column;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .game-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, 
+                            rgba(140, 61, 206, 0) 0%, 
+                            rgba(140, 61, 206, 0.1) 50%, 
+                            rgba(140, 61, 206, 0) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
         }
 
         .game-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            transform: translateY(-8px) scale(1.02) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(140, 61, 206, 0.2);
+            border-color: rgba(140, 61, 206, 0.2);
+        }
+
+        .game-item:hover::before {
+            opacity: 1;
         }
 
         .game-thumbnail {
@@ -854,6 +1149,7 @@
             justify-content: center;
             padding: 0;
             height: 250px; /* Ensure the thumbnail takes full height */
+            overflow: hidden;
         }
 
         .game-thumbnail img {
@@ -861,23 +1157,36 @@
             height: 100%;
             object-fit: contain; /* Change from cover to contain to show full image */
             max-height: 100%;
+            transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            z-index: 2;
         }
 
-        /* Add back the text at bottom */
+        .game-item:hover .game-thumbnail img {
+            transform: scale(1.1);
+        }
+
         .game-title {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: transparent;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
             color: white;
-            padding: 10px 0;
+            padding: 30px 0 12px;
             text-align: center;
             font-size: 20px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
-            z-index: 2;
+            z-index: 3;
+            opacity: 0.95;
+            transition: all 0.3s ease;
+        }
+
+        .game-item:hover .game-title {
+            padding-bottom: 16px;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
         }
 
         /* Provider tag at bottom */
@@ -1029,12 +1338,50 @@
             border-radius: 50%;
             overflow: hidden;
             cursor: pointer;
+            background: #5E4CE6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 16px;
         }
 
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px;
+            padding-left: 6px;
+            padding-right: 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .logout-btn {
+            color: var(--text-secondary);
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
         }
 
         /* Add smooth scrolling to the whole page */
@@ -1093,6 +1440,289 @@
             visibility: visible;
             bottom: calc(100% + 5px);
         }
+
+        /* Custom scroll bar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(20, 20, 41, 0.8);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(140, 61, 206, 0.6);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(140, 61, 206, 0.8);
+        }
+
+        /* Subtle animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -100% 0; }
+            100% { background-position: 100% 0; }
+        }
+
+        /* Hover glow effect for specific elements */
+        .hover-glow {
+            transition: all 0.3s ease;
+        }
+
+        .hover-glow:hover {
+            filter: drop-shadow(0 0 8px rgba(140, 61, 206, 0.6));
+        }
+
+        /* Transaction table styles */
+        .transactions-section {
+            margin-bottom: 40px;
+            background: rgba(13, 13, 31, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .tab-navigation {
+            display: flex;
+            padding: 20px 20px 0;
+        }
+        
+        .tab-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 8px 16px;
+            transition: all 0.2s ease;
+            margin-right: 10px;
+        }
+        
+        .tab-link.active {
+            color: white;
+            border-bottom: 2px solid var(--accent-purple);
+        }
+        
+        .tab-link:hover:not(.active) {
+            color: var(--text-primary);
+        }
+        
+        .transactions-table {
+            width: 100%;
+            overflow-x: auto;
+        }
+        
+        .transactions-table table {
+            width: 100%;
+            border-collapse: collapse;
+            color: var(--text-primary);
+        }
+        
+        .transactions-table th {
+            text-align: left;
+            padding: 16px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-transform: uppercase;
+        }
+        
+        .transactions-table td {
+            padding: 12px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .transactions-table tbody tr {
+            transition: background 0.2s ease;
+        }
+        
+        .transactions-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        .game-icon {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .game-icon img {
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+        }
+        
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #a09fb7;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: inline-flex;
+        }
+        
+        .user-badge i {
+            color: #ffd700;
+            font-size: 10px;
+        }
+        
+        .multiplier {
+            color: #6e6dff;
+            font-weight: 600;
+        }
+        
+        .payout {
+            color: var(--text-secondary);
+        }
+        
+        .wager-amount {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+        }
+        
+        .coin-icon {
+            width: 16px;
+            height: 16px;
+            background: #f8c915;
+            border-radius: 50%;
+        }
+
+        /* Footer Styles */
+        .site-footer {
+            background: #0c0c1d;
+            padding: 50px 40px 20px;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-left: 64px;
+            transition: margin 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            width: auto;
+            position: relative;
+        }
+        
+        .site-footer.sidebar-expanded {
+            margin-left: 240px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 160px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column h4 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 14px;
+        }
+        
+        .footer-column a:hover {
+            color: var(--text-primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--accent-purple);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 12px;
+        }
+        
+        .footer-certifications {
+            display: flex;
+            gap: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .footer-column {
+                width: 100%;
+                margin-right: 0;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1143,9 +1773,13 @@
                 <button class="icon-btn" data-tooltip="Notifications">
                     <i class="fas fa-bell"></i>
                 </button>
-                <div class="user-avatar">
-                    <img src="https://via.placeholder.com/40x40/8C3DCE/FFFFFF?text=U" alt="User">
+                <div class="user-profile">
+                    <div class="user-avatar" id="user-initials">DS</div>
+                    <span class="user-name" id="user-name">Denis Suciu</span>
                 </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
             </div>
         </div>
     </nav>
@@ -1280,7 +1914,203 @@
             </div>
         </div>
 
+        <!-- Recent Transactions Table -->
+        <div class="transactions-section">
+            <div class="section-header">
+                <h2>Recent Bets</h2>
+                <div class="tab-navigation">
+                    <a href="#" class="tab-link active">All</a>
+                    <a href="#" class="tab-link">High Wins</a>
+                    <a href="#" class="tab-link">Lucky Wins</a>
+                </div>
+            </div>
+            <div class="transactions-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>GAME</th>
+                            <th>USERNAME</th>
+                            <th>TIME</th>
+                            <th>WAGER</th>
+                            <th>MULTIPLIER</th>
+                            <th>PAYOUT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="game-icon">
+                                    <img src="MINES.png" alt="Mines">
+                                    <span>Mines</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="user-badge">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Hidden</span>
+                                </div>
+                            </td>
+                            <td>3:31 PM</td>
+                            <td>
+                                <div class="wager-amount">
+                                    <span>$44,100.00</span>
+                                    <div class="coin-icon"></div>
+                                </div>
+                            </td>
+                            <td><span class="multiplier">0.00x</span></td>
+                            <td><span class="payout">$0.00</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="game-icon">
+                                    <img src="MINES.png" alt="Mines" width="30">
+                                    <span>Mines</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="user-badge">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Hidden</span>
+                                </div>
+                            </td>
+                            <td>3:31 PM</td>
+                            <td>
+                                <div class="wager-amount">
+                                    <span>$44,100.00</span>
+                                    <div class="coin-icon"></div>
+                                </div>
+                            </td>
+                            <td><span class="multiplier">0.00x</span></td>
+                            <td><span class="payout">$0.00</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="game-icon">
+                                    <img src="MINES.png" alt="Mines" width="30">
+                                    <span>Mines</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="user-badge">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Hidden</span>
+                                </div>
+                            </td>
+                            <td>3:31 PM</td>
+                            <td>
+                                <div class="wager-amount">
+                                    <span>$44,100.00</span>
+                                    <div class="coin-icon"></div>
+                                </div>
+                            </td>
+                            <td><span class="multiplier">0.00x</span></td>
+                            <td><span class="payout">$0.00</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="game-icon">
+                                    <img src="MINES.png" alt="Mines" width="30">
+                                    <span>Mines</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="user-badge">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Hidden</span>
+                                </div>
+                            </td>
+                            <td>3:30 PM</td>
+                            <td>
+                                <div class="wager-amount">
+                                    <span>$44,100.00</span>
+                                    <div class="coin-icon"></div>
+                                </div>
+                            </td>
+                            <td><span class="multiplier">0.00x</span></td>
+                            <td><span class="payout">$0.00</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="game-icon">
+                                    <img src="MINES.png" alt="Mines" width="30">
+                                    <span>Mines</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="user-badge">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Hidden</span>
+                                </div>
+                            </td>
+                            <td>3:30 PM</td>
+                            <td>
+                                <div class="wager-amount">
+                                    <span>$44,100.00</span>
+                                    <div class="coin-icon"></div>
+                                </div>
+                            </td>
+                            <td><span class="multiplier">0.00x</span></td>
+                            <td><span class="payout">$0.00</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="KeepRolling_White.png" alt="KeepRolling" height="40">
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>About</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Responsible Gaming</a></li>
+                        <li><a href="#">Fair Play</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Games</h4>
+                    <ul>
+                        <li><a href="#">Originals</a></li>
+                        <li><a href="#">Casino</a></li>
+                        <li><a href="#">Slots</a></li>
+                        <li><a href="#">Live Casino</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Social</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2023 KeepRolling. All rights reserved.</p>
+            <div class="footer-certifications">
+                <img src="https://via.placeholder.com/40x20/CCCCCC/666666?text=18+" alt="18+">
+                <img src="https://via.placeholder.com/40x20/CCCCCC/666666?text=SSL" alt="SSL Secure">
+                <img src="https://via.placeholder.com/60x20/CCCCCC/666666?text=LICENSED" alt="Licensed">
+            </div>
+        </div>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1288,6 +2118,7 @@
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
             const navbar = document.querySelector('.navbar');
+            const siteFooter = document.querySelector('.site-footer');
 
             let isSidebarExpanded = false;
 
@@ -1295,6 +2126,7 @@
                 isSidebarExpanded = !isSidebarExpanded;
                 sidebar.classList.toggle('expanded', isSidebarExpanded);
                 mainContent.classList.toggle('sidebar-expanded', isSidebarExpanded);
+                siteFooter.classList.toggle('sidebar-expanded', isSidebarExpanded);
             };
 
             sidebarToggle.addEventListener('click', toggleSidebar);
@@ -1337,11 +2169,20 @@
             const loggedOutUI = document.getElementById('logged-out-ui');
             const loggedInUI = document.getElementById('logged-in-ui');
             const heroSection = document.getElementById('hero-section');
+            const userInitials = document.getElementById('user-initials');
+            const userName = document.getElementById('user-name');
 
             let isLoggedIn = false;
+            const userInfo = { name: 'Denis Suciu', initials: 'DS' };
 
             const toggleLoginState = () => {
                 isLoggedIn = !isLoggedIn;
+                
+                // Set user info
+                if (isLoggedIn) {
+                    userInitials.textContent = userInfo.initials;
+                    userName.textContent = userInfo.name;
+                }
                 
                 // Toggle UI elements
                 loggedOutUI.style.display = isLoggedIn ? 'none' : 'flex';
