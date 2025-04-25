@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - KeepRolling</title>
+    <style>
+        :root {
+            --russian-violet: #10002b;
+            --russian-violet-2: #240046;
+            --persian-indigo: #3c096c;
+            --tekhelet: #5a189a;
+            --grape: #6b22ad;
+            --french-violet: #7b2cbf;
+            --blue-violet: #8c3dce;
+            --amethyst: #9d4edd;
+            --heliotrope: #c77dff;
+            --mauve: #e0aaff;
+            --dark-bg: #0B0E1F;
+            --input-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: rgba(20, 24, 41, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--heliotrope), var(--mauve));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--dark-bg);
+        }
+
+        .login-header h1 {
+            font-size: 1.75rem;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--heliotrope);
+            box-shadow: 0 0 0 2px rgba(199, 125, 255, 0.2);
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        .forgot-password a {
+            color: var(--heliotrope);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: var(--mauve);
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--heliotrope);
+        }
+
+        .remember-me label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .sign-in-button {
+            width: 100%;
+            padding: 0.9rem;
+            background: linear-gradient(45deg, var(--heliotrope), var(--french-violet));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .sign-in-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
+        }
+
+        .security-info {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .security-info svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        .signup-prompt {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .signup-prompt a {
+            color: var(--heliotrope);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .signup-prompt a:hover {
+            color: var(--mauve);
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--heliotrope);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo-container">
+                <div class="logo-icon">KR</div>
+                <div>KeepRolling</div>
+            </div>
+            <h1>Welcome Back</h1>
+            <p>Sign in to access your gaming account</p>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="forgot-password">
+                <a href="#">Forgot password?</a>
+            </div>
+
+            <div class="remember-me">
+                <input type="checkbox" id="remember" checked>
+                <label for="remember">Remember me for 30 days</label>
+            </div>
+
+            <button type="submit" class="sign-in-button">
+                Sign in
+            </button>
+
+            <div class="security-info">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 6c1.4 0 2.8 1.1 2.8 2.5S13.4 12 12 12s-2.8-1.1-2.8-2.5S10.6 7 12 7z"/>
+                </svg>
+                End-to-end encrypted | SOC2 Compliant
+            </div>
+
+            <div class="signup-prompt">
+                Don't have an account? <a href="#">Sign up</a>
+            </div>
+        </form>
+    </div>
+
+    <footer class="footer">
+        <a href="#">Terms of Service</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Data Usage Policy</a>
+        <div style="margin-top: 0.5rem;">© 2024 KeepRolling. All rights reserved.</div>
+    </footer>
+</body>
+</html> 
