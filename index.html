@@ -41,6 +41,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-y: hidden; /* Prevent body from having its own scrollbar */
         }
 
         body::before {
@@ -520,48 +521,53 @@
             margin-left: 64px;
             margin-top: 80px; /* Adjusted for taller navbar */
             padding: 32px; /* Increased padding */
-            padding-bottom: 60px; /* Added padding to ensure space before footer */
+            padding-bottom: 60px; /* Added padding at bottom */
             transition: margin 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             background: var(--dark-bg);
             position: relative;
             flex: 1;
-            min-height: calc(100vh - 80px - 200px); /* Ensure main content has sufficient height */
-            overflow-y: auto;
+            overflow-y: auto; /* Only the main content should scroll */
         }
 
         .main-content.sidebar-expanded {
             margin-left: 240px;
         }
 
-        /* Roobet-style Layout */
+        /* Enhanced Hero Banner */
         .hero-banner {
             display: flex;
-            background: linear-gradient(90deg, var(--nav-bg) 0%, rgba(63, 43, 150, 0.8) 100%);
-            border-radius: 12px;
+            background: linear-gradient(135deg, var(--nav-bg) 0%, rgba(63, 43, 150, 0.8) 100%);
+            border-radius: 16px;
             overflow: hidden;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 32px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .hero-content {
             flex: 1;
-            padding: 40px;
+            padding: 50px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
         .hero-content h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 16px;
             color: var(--text-primary);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .hero-content p {
-            font-size: 18px;
+            font-size: 20px;
             color: var(--text-secondary);
-            margin-bottom: 24px;
+            margin-bottom: 32px;
+            max-width: 500px;
+            line-height: 1.5;
         }
 
         .hero-image {
@@ -570,408 +576,45 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            background: linear-gradient(45deg, rgba(63, 43, 150, 0.8) 0%, rgba(140, 61, 206, 0.4) 100%);
         }
 
         .hero-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            opacity: 0.9;
+            transition: transform 0.5s ease, opacity 0.5s ease;
         }
 
-        /* Enhanced Button Styling */
-        .btn-primary {
-            background: linear-gradient(90deg, #FFD700, #F5C211);
-            color: #000;
-            font-weight: 600;
-            padding: 10px 24px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-            border: 1px solid rgba(255, 215, 0, 0.6);
-            position: relative;
-            overflow: hidden;
-            z-index: 3;
-            display: inline-block;
-            text-align: center;
+        .hero-banner:hover .hero-image img {
+            transform: scale(1.05);
+            opacity: 1;
         }
 
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(90deg, #F5C211, #FFD700);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
-        }
-
-        .btn-primary:hover::before {
-            left: 100%;
-        }
-
-        .btn-secondary {
-            background: linear-gradient(90deg, var(--accent-purple), var(--accent-purple-light));
-            color: white;
-            font-weight: 600;
-            padding: 10px 24px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(140, 61, 206, 0.3);
-            border: 1px solid rgba(140, 61, 206, 0.6);
-            position: relative;
-            overflow: hidden;
-            z-index: 3;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .btn-secondary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .btn-secondary:hover {
-            background: linear-gradient(90deg, var(--accent-purple-light), var(--accent-purple));
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(140, 61, 206, 0.4);
-        }
-
-        .btn-secondary:hover::before {
-            left: 100%;
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text-primary);
-            font-weight: 600;
-            padding: 9px 24px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-            overflow: hidden;
-            z-index: 3;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .btn-outline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-3px);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-outline:hover::before {
-            left: 100%;
-        }
-
-        /* Updated button classes */
-        .register-btn {
-            background: linear-gradient(90deg, #FFD700, #F5C211);
-            color: #000;
-            font-weight: 700;
-            padding: 16px 30px;
-            border-radius: 30px;
-            text-align: center;
-            text-decoration: none;
-            margin-bottom: 32px;
-            display: inline-block;
-            width: 100%;
-            max-width: 300px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 0.5px;
-            z-index: 2;
-            border: 1px solid rgba(255, 215, 0, 0.6);
-        }
-
-        .register-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.7s ease;
-        }
-
-        .register-btn:hover {
-            background: linear-gradient(90deg, #F5C211, #FFD700);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(255, 215, 0, 0.6);
-        }
-
-        .register-btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-login {
-            color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 9px 20px;
-            border-radius: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-login::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .btn-login:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-login:hover::before {
-            left: 100%;
-        }
-
-        .btn-signup {
-            background: linear-gradient(90deg, var(--accent-purple), var(--accent-purple-light));
-            color: var(--text-primary);
-            padding: 10px 24px;
-            border-radius: 30px;
-            box-shadow: 0 4px 12px rgba(140, 61, 206, 0.3);
-            border: 1px solid rgba(140, 61, 206, 0.6);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-signup::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .btn-signup:hover {
-            background: linear-gradient(90deg, var(--accent-purple-light), var(--accent-purple));
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(140, 61, 206, 0.4);
-        }
-
-        .btn-signup:hover::before {
-            left: 100%;
-        }
-
-        .learn-more-btn {
-            background: linear-gradient(90deg, #FFD700, #F5C211);
-            color: #000;
-            font-weight: 600;
-            padding: 10px 24px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-            border: 1px solid rgba(255, 215, 0, 0.6);
-            position: relative;
-            overflow: hidden;
-            z-index: 3;
-            display: inline-block;
-        }
-
-        .learn-more-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .learn-more-btn:hover {
-            background: linear-gradient(90deg, #F5C211, #FFD700);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
-        }
-
-        .learn-more-btn:hover::before {
-            left: 100%;
-        }
-
-        .deposit-btn {
-            background: linear-gradient(90deg, #FFD700, #F5C211);
-            color: #000;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 215, 0, 0.6);
-        }
-
-        .deposit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .deposit-btn:hover {
-            background: linear-gradient(90deg, #F5C211, #FFD700);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
-        }
-
-        .deposit-btn:hover::before {
-            left: 100%;
-        }
-
-        .logout-btn {
-            color: var(--text-secondary);
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logout-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .logout-btn:hover::before {
-            left: 100%;
-        }
-
-        .icon-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .icon-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: all 0.5s ease;
-            border-radius: 50%;
-        }
-
-        .icon-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .icon-btn:hover::before {
-            left: 100%;
-        }
-
-        /* Category Cards */
+        /* Enhanced Category Cards */
         .category-cards {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 32px;
+            gap: 30px;
+            margin-bottom: 40px;
         }
 
         .category-card {
             position: relative;
-            border-radius: 12px;
-            height: 180px;
+            border-radius: 16px;
+            height: 200px;
             overflow: hidden;
             display: flex;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .category-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             box-shadow: var(--hover-shadow);
             border-color: var(--accent-purple);
         }
@@ -982,7 +625,7 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            height: 4px;
             background: linear-gradient(90deg, var(--accent-purple), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -994,30 +637,28 @@
         }
 
         .casino-card {
-            background: linear-gradient(90deg, rgba(83, 45, 177, 0.9) 0%, rgba(115, 71, 193, 0.9) 100%);
-        }
-
-        .sports-card {
-            background: linear-gradient(90deg, rgba(223, 148, 0, 0.9) 0%, rgba(255, 184, 0, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(83, 45, 177, 0.9) 0%, rgba(115, 71, 193, 0.9) 100%);
         }
 
         .category-content {
             position: relative;
             z-index: 1;
-            padding: 30px;
+            padding: 40px;
             flex: 1;
         }
 
         .category-content h2 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 8px;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
             color: var(--text-primary);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
         .category-content p {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
         }
 
         .category-image {
@@ -1031,86 +672,99 @@
             height: 100%;
             width: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
         }
 
-        /* Games Sections */
+        .category-card:hover .category-image img {
+            transform: scale(1.1);
+        }
+
+        /* Enhanced Games Section */
         .games-section {
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         .section-header {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             position: relative;
         }
 
         .section-header h2 {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: 800;
             color: var(--text-primary);
+            letter-spacing: -0.5px;
         }
 
         .view-all {
             margin-left: auto;
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 15px;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: color 0.2s;
+            transition: color 0.3s, transform 0.3s;
+            padding: 8px 16px;
+            border-radius: 20px;
         }
 
         .view-all:hover {
             color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(3px);
         }
 
         .navigation-arrows {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             margin-left: 20px;
         }
 
         .nav-arrow {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--text-primary);
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
         }
 
         .nav-arrow:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-            gap: 20px;
+            gap: 25px;
             justify-items: center;
             padding: 10px 0;
         }
 
         .game-item {
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
             background: linear-gradient(135deg, #1a1a36 0%, #131329 100%);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
             cursor: pointer;
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             margin: 0 auto 24px;
             width: 100%;
-            max-width: 150px; /* Width from reference */
-            height: 250px; /* Fixed height to match reference */
+            max-width: 160px;
+            height: 260px;
             display: flex;
             flex-direction: column;
             transform-style: preserve-3d;
@@ -1131,9 +785,9 @@
         }
 
         .game-item:hover {
-            transform: translateY(-8px) scale(1.02) rotateX(5deg);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(140, 61, 206, 0.2);
-            border-color: rgba(140, 61, 206, 0.2);
+            transform: translateY(-10px) scale(1.03) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(140, 61, 206, 0.2);
+            border-color: rgba(140, 61, 206, 0.3);
         }
 
         .game-item:hover::before {
@@ -1216,341 +870,81 @@
             z-index: 1;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 1024px) {
-            .category-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .games-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-banner {
-                flex-direction: column;
-            }
-            
-            .hero-image {
-                width: 100%;
-                height: 200px;
-            }
-            
-            .promo-content {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-            
-            .games-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            }
-        }
-
-        /* User Account Styles */
-        .user-account {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .balance-display {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 8px 12px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .balance-display:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .balance-amount {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .deposit-btn {
-            background: var(--gold);
-            color: #000;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .deposit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.7s ease;
-        }
-
-        .deposit-btn:hover {
-            background: var(--gold-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
-        }
-
-        .deposit-btn:hover::before {
-            left: 100%;
-        }
-
-        .user-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .icon-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .icon-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            overflow: hidden;
-            cursor: pointer;
-            background: #5E4CE6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: white;
-            font-size: 16px;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 6px;
-            padding-left: 6px;
-            padding-right: 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .user-profile:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .user-name {
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .logout-btn {
-            color: var(--text-secondary);
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-        }
-
-        /* Add smooth scrolling to the whole page */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Accessibility and focus improvements */
-        a:focus, button:focus {
-            outline: 2px solid var(--accent-purple);
-            outline-offset: 2px;
-        }
-
-        /* Skip to content link for screen readers */
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: var(--accent-purple);
-            color: white;
-            padding: 8px;
-            z-index: 9999;
-            transition: top 0.3s;
-        }
-
-        .skip-link:focus {
-            top: 0;
-        }
-
-        /* Tooltip styles */
-        [data-tooltip] {
-            position: relative;
-        }
-
-        [data-tooltip]::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            pointer-events: none;
-            z-index: 1000;
-        }
-
-        [data-tooltip]:hover::after {
-            opacity: 1;
-            visibility: visible;
-            bottom: calc(100% + 5px);
-        }
-
-        /* Custom scroll bar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(20, 20, 41, 0.8);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(140, 61, 206, 0.6);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(140, 61, 206, 0.8);
-        }
-
-        /* Subtle animations */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -100% 0; }
-            100% { background-position: 100% 0; }
-        }
-
-        /* Hover glow effect for specific elements */
-        .hover-glow {
-            transition: all 0.3s ease;
-        }
-
-        .hover-glow:hover {
-            filter: drop-shadow(0 0 8px rgba(140, 61, 206, 0.6));
-        }
-
-        /* Transaction table styles */
+        /* Enhanced Transactions Section */
         .transactions-section {
             margin-bottom: 40px;
-            background: rgba(13, 13, 31, 0.7);
-            border-radius: 12px;
+            background: rgba(13, 13, 31, 0.8);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        
+
         .tab-navigation {
             display: flex;
-            padding: 20px 20px 0;
+            padding: 24px 24px 0;
         }
-        
+
         .tab-link {
             color: var(--text-secondary);
             text-decoration: none;
             font-size: 15px;
-            font-weight: 500;
-            padding: 8px 16px;
-            transition: all 0.2s ease;
-            margin-right: 10px;
+            font-weight: 600;
+            padding: 10px 18px;
+            transition: all 0.3s ease;
+            margin-right: 12px;
+            border-radius: 20px;
         }
-        
+
         .tab-link.active {
             color: white;
-            border-bottom: 2px solid var(--accent-purple);
+            background: rgba(140, 61, 206, 0.15);
+            border-bottom: none;
         }
-        
+
         .tab-link:hover:not(.active) {
             color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
         }
-        
+
         .transactions-table {
             width: 100%;
             overflow-x: auto;
+            padding: 10px;
         }
-        
+
         .transactions-table table {
             width: 100%;
             border-collapse: collapse;
             color: var(--text-primary);
         }
-        
+
         .transactions-table th {
             text-align: left;
-            padding: 16px;
-            font-weight: 600;
+            padding: 18px;
+            font-weight: 700;
             font-size: 14px;
             color: var(--text-secondary);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
+
         .transactions-table td {
-            padding: 12px 16px;
+            padding: 16px 18px;
             font-size: 14px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
+
         .transactions-table tbody tr {
-            transition: background 0.2s ease;
+            transition: all 0.3s ease;
         }
-        
+
         .transactions-table tbody tr:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
         }
-        
+
         .game-icon {
             display: flex;
             align-items: center;
@@ -1614,6 +1008,7 @@
             transition: margin 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             width: auto;
             position: relative;
+            flex-shrink: 0; /* Prevent footer from shrinking */
         }
         
         .site-footer.sidebar-expanded {
@@ -1865,24 +1260,6 @@
             </div>
         </div>
 
-        <!-- Weekly Raffle Banner -->
-        <div class="promo-banner">
-            <div class="promo-content">
-                <h2>$100,000 Weekly Raffle</h2>
-                <a href="#" class="learn-more-btn">Learn More</a>
-                <div class="countdown">
-                    <i class="fas fa-clock"></i>
-                    <span>2d 16h 34m</span>
-                </div>
-            </div>
-            <div class="raffle-tickets">
-                <div class="ticket-counter">
-                    <i class="fas fa-ticket-alt"></i>
-                    <span>100 Raffle Winners</span>
-                </div>
-            </div>
-        </div>
-
         <!-- Category Cards -->
         <div class="category-cards">
             <div class="category-card casino-card">
@@ -2059,67 +1436,12 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="KeepRolling_White.png" alt="KeepRolling" height="40">
-            </div>
-            <div class="footer-links">
-                <div class="footer-column">
-                    <h4>About</h4>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Responsible Gaming</a></li>
-                        <li><a href="#">Fair Play</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Games</h4>
-                    <ul>
-                        <li><a href="#">Originals</a></li>
-                        <li><a href="#">Casino</a></li>
-                        <li><a href="#">Slots</a></li>
-                        <li><a href="#">Live Casino</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Social</h4>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-discord"></i></a>
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2023 KeepRolling. All rights reserved.</p>
-            <div class="footer-certifications">
-                <img src="https://via.placeholder.com/40x20/CCCCCC/666666?text=18+" alt="18+">
-                <img src="https://via.placeholder.com/40x20/CCCCCC/666666?text=SSL" alt="SSL Secure">
-                <img src="https://via.placeholder.com/60x20/CCCCCC/666666?text=LICENSED" alt="Licensed">
-            </div>
-        </div>
-    </footer>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sidebarToggle = document.querySelector('.sidebar-toggle');
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
             const navbar = document.querySelector('.navbar');
-            const siteFooter = document.querySelector('.site-footer');
 
             let isSidebarExpanded = false;
 
@@ -2127,7 +1449,6 @@
                 isSidebarExpanded = !isSidebarExpanded;
                 sidebar.classList.toggle('expanded', isSidebarExpanded);
                 mainContent.classList.toggle('sidebar-expanded', isSidebarExpanded);
-                siteFooter.classList.toggle('sidebar-expanded', isSidebarExpanded);
             };
 
             sidebarToggle.addEventListener('click', toggleSidebar);
