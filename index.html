@@ -148,53 +148,43 @@
                 </div>
                 </div>
             </div>
-            <div class="hero-image">
-                <div class="floating-cards">
-                    <div class="game-card card-1">
-                        <img src="MINES.png" alt="Mines Game">
+            <div class="hero-carousel">
+                <div class="carousel-container">
+                    <div class="card" data-pos="left" data-page="mines.html">
+                        <div class="card-content">
+                            <img src="MINES.png" alt="Mines Game">
+                            <div class="card-overlay">
+                                <h3>Mines</h3>
+                                <p>Up to 1000x</p>
         </div>
-                    <div class="game-card card-2">
-                        <img src="towers.png" alt="Towers Game">
                 </div>
-                    <div class="stats-card">
-                        <div class="stat-row">
-                            <i class="fas fa-users"></i>
-                            <span>1M+ Players</span>
             </div>
-                        <div class="stat-row">
-                            <i class="fas fa-trophy"></i>
-                            <span>$50M+ Won</span>
+                    <div class="card" data-pos="center" data-page="towers.html">
+                        <div class="card-content">
+                            <img src="towers.png" alt="Towers Game">
+                            <div class="card-overlay">
+                                <h3>Towers</h3>
+                                <p>Up to 4733x</p>
                     </div>
                 </div>
             </div>
+                    <div class="card" data-pos="right" data-page="dice.html">
+                        <div class="card-content">
+                            <img src="dice.png" alt="Dice Game">
+                            <div class="card-overlay">
+                                <h3>Dice</h3>
+                                <p>Up to 495x</p>
         </div>
-        </section>
-
-        
-
-        <!-- Games Section -->
-        <section class="games-section">
-            <div class="section-header">
-                <h2>Popular Games</h2>
-                <a href="#" class="view-all">
-                    View All Games
-                    <i class="fas fa-arrow-right"></i>
-                </a>
                 </div>
-            <div class="games-grid">
-                <a href="#" data-page="mines.html" class="game-item">
-                    <div class="game-thumbnail">
-                        <img src="MINES.png" alt="Mines Game">
             </div>
-                </a>
-                <a href="#" data-page="towers.html" class="game-item">
-                    <div class="game-thumbnail">
-                        <img src="towers.png" alt="Towers Game">
                                 </div>
-                </a>
-                <!-- More game items can be added here -->
+                <div class="carousel-hint">
+                    <i class="fas fa-mouse"></i>
+                    <span>Scroll to explore games</span>
+                                </div>
                                 </div>
         </section>
+
     </main>
 
     <!-- Scripts -->
@@ -207,7 +197,7 @@
             if (page !== 'index.html' && !document.getElementById(page + '-css')) {
                 const link = document.createElement('link');
                 link.rel = 'stylesheet';
-                link.id = page + '-css';                  // e.g. "mines.html-css"
+                link.id = page + '-css';
                 link.href = 'css/' + page.replace('.html', '.css');
                 document.head.appendChild(link);
                 await new Promise(r => link.onload = r);
@@ -254,6 +244,45 @@
             document.querySelector('.sidebar').classList.toggle('expanded');
             document.querySelector('.navbar').classList.toggle('sidebar-expanded');
             document.querySelector('.main-content').classList.toggle('sidebar-expanded');
+        });
+
+        // Carousel Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.querySelector('.game-carousel');
+            const cards = Array.from(carousel.querySelectorAll('.card'));
+            let centerIndex = 1; // Start with second card centered
+
+            function updateCarousel() {
+                cards.forEach((card, index) => {
+                    // Remove all positions
+                    card.removeAttribute('data-pos');
+                    
+                    // Calculate relative position
+                    const relativePos = (index - centerIndex + cards.length) % cards.length;
+                    
+                    // Assign new position
+                    if (relativePos === 0) {
+                        card.setAttribute('data-pos', 'center');
+                    } else if (relativePos === cards.length - 1 || relativePos === -1) {
+                        card.setAttribute('data-pos', 'left');
+                    } else if (relativePos === 1) {
+                        card.setAttribute('data-pos', 'right');
+                    }
+                });
+            }
+
+            carousel.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                if (e.deltaY > 0) {
+                    centerIndex = (centerIndex + 1) % cards.length;
+                } else {
+                    centerIndex = (centerIndex - 1 + cards.length) % cards.length;
+                }
+                updateCarousel();
+            });
+
+            // Initial setup
+            updateCarousel();
         });
     </script>
 </body>
