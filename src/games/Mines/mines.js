@@ -17,8 +17,8 @@ class MinesGame {
         this.houseEdge = 0.05; // 5% Hausvorteil
         
         this.assets = {
-            coin: '<img src="coin.png" style="width: 100%; height: 100%; object-fit: contain;">',
-            bomb: '<img src="bomb.png" style="width: 100%; height: 100%; object-fit: contain;">'
+            coin: '<img src="../../assets/images/coin.png" style="width: 100%; height: 100%; object-fit: contain;">',
+            bomb: '<img src="../../assets/images/bomb.png" style="width: 100%; height: 100%; object-fit: contain;">'
         };
         
         this.setupEventListeners();

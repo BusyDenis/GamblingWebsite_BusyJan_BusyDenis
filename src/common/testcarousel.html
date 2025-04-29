@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>3-Karten 3D-Karussell mit Snap</title>
+  <style>
+    body {
+      margin: 0;
+      background: #221a4d;
+      display: flex; justify-content: center; align-items: center;
+      height: 100vh; overflow: hidden;
+      font-family: sans-serif; color: #fff;
+    }
+    .carousel3d {
+      width: 700px; height: 360px;
+      perspective: 800px;
+    }
+    #carousel {
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+    }
+    .card {
+      position: absolute; top: 50%; left: 50%;
+      width: 240px; height: 320px;
+      margin: -160px 0 0 -120px;
+      border-radius: 16px;
+      background-size: cover; background-position: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      backface-visibility: hidden;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 20px; font-size: 24px; text-transform: uppercase;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="carousel3d">
+    <div id="carousel"></div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Deine Spiele hier definieren
+    const games = [
+      { name: 'Mine',   img: 'https://via.placeholder.com/300x400/ff4444/fff?text=Mine' },
+      { name: 'Towers', img: 'https://via.placeholder.com/300x400/44ff44/fff?text=Towers' },
+      { name: 'Dice',   img: 'https://via.placeholder.com/300x400/4444ff/fff?text=Dice' }
+    ];
+
+    const count     = games.length;
+    const radius    = 300;                // Tiefe
+    const stepAngle = 360 / count;        // Einrasten-Winkel
+    let rotation    = 0;                  // aktueller Winkel
+    let velocity    = 0;                  // aktuelle Drehgeschwindigkeit
+    const friction  = 0.95;               // Dämpfung
+    const minVel    = 0.2;                // Snap-Threshold
+    let snapping    = false;              // um doppeltes Snap zu vermeiden
+
+    const carousel = document.getElementById('carousel');
+
+    // Karten erzeugen und verteilen
+    games.forEach((game, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.backgroundImage = `url(${game.img})`;
+      card.textContent = game.name;
+      card.style.transform = `rotateY(${i * stepAngle}deg) translateZ(${radius}px)`;
+      carousel.appendChild(card);
+    });
+
+    // Wheel-Input sammelt Geschwindigkeit
+    window.addEventListener('wheel', e => {
+      e.preventDefault();
+      velocity += e.deltaY * 0.025; // langsame Beschleunigung
+    }, { passive: false });
+
+    // Animations-Loop
+    function animate() {
+      if (!snapping) {
+        // Inertial drehen
+        if (Math.abs(velocity) > 0.001) {
+          rotation += velocity;
+          carousel.style.transform = `rotateY(${rotation}deg)`;
+          velocity *= friction;
+
+          // Sobald Geschwindigkeit unter Threshold fällt → einrasten
+          if (Math.abs(velocity) < minVel) {
+            snapping = true;
+            const target = Math.round(rotation / stepAngle) * stepAngle;
+            // CSS-Transition fürs Snap
+            carousel.style.transition = 'transform 0.6s ease-out';
+            carousel.style.transform  = `rotateY(${target}deg)`;
+            rotation = target;
+            velocity = 0;
+            carousel.addEventListener('transitionend', () => {
+              carousel.style.transition = '';
+              snapping = false;
+            }, { once: true });
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  });
+  </script>
+
+</body>
+</html>

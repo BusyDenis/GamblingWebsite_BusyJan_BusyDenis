@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KeepRolling</title>
-    <link rel="icon" type="image/png" href="KeepRolling_Black.png">
+    <link rel="icon" type="image/png" href="../assets/images/KeepRolling_Black.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="../assets/css/homepage.css">
 </head>
 <body>
     <div class="purple-orb orb-1"></div>
@@ -15,7 +15,7 @@
     <nav class="navbar">
         <div class="navbar-brand">
             <a href="#" data-page="index.html" class="logo-container">
-                <img src="KeepRolling_White.png" alt="KeepRolling" class="logo-image">
+                <img src="../assets/images/KeepRolling_White.png" alt="KeepRolling" class="logo-image">
             </a>
         </div>
         <div class="navbar-nav">
@@ -127,69 +127,44 @@
                     <div class="benefit-item">
                         <i class="fas fa-percentage"></i>
                         <span>Daily Cashback Rewards</span>
-                </div>
+                    </div>
                     <div class="benefit-item">
                         <i class="fas fa-coins"></i>
                         <span>Exclusive VIP Rewards</span>
-            </div>
+                    </div>
                     <div class="benefit-item">
                         <i class="fas fa-bolt"></i>
                         <span>Instant Withdrawals</span>
-            </div>
-        </div>
+                    </div>
+                </div>
                 <div class="cta-buttons">
                     <a href="#" class="cta-button signup-cta">
                         <span>Start Playing Now</span>
-                        <i class="fas fa-arrow-right"></i>
                     </a>
                     <div class="login-text">
                         Already have an account? 
                         <a href="#" class="login-link">Log In</a>
-                </div>
-                </div>
-            </div>
-            <div class="hero-carousel">
-                <div class="carousel-container">
-                    <div class="card" data-pos="left" data-page="mines.html">
-                        <div class="card-content">
-                            <img src="MINES.png" alt="Mines Game">
-                            <div class="card-overlay">
-                                <h3>Mines</h3>
-                                <p>Up to 1000x</p>
-        </div>
-                </div>
-            </div>
-                    <div class="card" data-pos="center" data-page="towers.html">
-                        <div class="card-content">
-                            <img src="towers.png" alt="Towers Game">
-                            <div class="card-overlay">
-                                <h3>Towers</h3>
-                                <p>Up to 4733x</p>
                     </div>
                 </div>
             </div>
-                    <div class="card" data-pos="right" data-page="dice.html">
-                        <div class="card-content">
-                            <img src="dice.png" alt="Dice Game">
-                            <div class="card-overlay">
-                                <h3>Dice</h3>
-                                <p>Up to 495x</p>
-        </div>
-                </div>
-            </div>
-                                </div>
+        </section>
+
+        <section class="game-banner">
+            <div class="carousel3d">
+                <div id="carousel"></div>
                 <div class="carousel-hint">
                     <i class="fas fa-mouse"></i>
                     <span>Scroll to explore games</span>
-                                </div>
-                                </div>
+                </div>
+            </div>
         </section>
 
     </main>
 
     <!-- Scripts -->
-    <script src="mines.js"></script>
-    <script src="towers.js"></script>
+    <script src="../games/Mines/mines.js"></script>
+    <script src="../games/Towers/towers.js"></script>
+    <script src="../assets/js/carousel.js"></script>
     <script>
         // SPA Loader
         async function loadContent(page) {
@@ -198,7 +173,7 @@
                 const link = document.createElement('link');
                 link.rel = 'stylesheet';
                 link.id = page + '-css';
-                link.href = 'css/' + page.replace('.html', '.css');
+                link.href = '../assets/css/' + page.replace('.html', '.css');
                 document.head.appendChild(link);
                 await new Promise(r => link.onload = r);
             }
@@ -210,9 +185,13 @@
             const main = doc.querySelector('main');
             document.getElementById('content').innerHTML = main.innerHTML;
             
-            // 3) Initialize game
+            // 3) Initialize game or carousel
             if (page === 'mines.html') new MinesGame();
             if (page === 'towers.html') new TowersGame();
+            if (page === 'index.html') {
+                console.log('Initializing carousel...');
+                initCarousel();
+            }
             
             // 4) Update active states
             document.querySelectorAll('[data-page].active')
@@ -247,42 +226,77 @@
         });
 
         // Carousel Logic
-        document.addEventListener('DOMContentLoaded', function() {
-            const carousel = document.querySelector('.game-carousel');
-            const cards = Array.from(carousel.querySelectorAll('.card'));
-            let centerIndex = 1; // Start with second card centered
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1) Spiele definieren (jetzt 7 Stück)
+            const games = [
+                { name:'Mine',     img:'../assets/images/Mines.png'      },
+                { name:'Towers',   img:'../assets/images/Towers.png'    },
+                { name:'Dice',     img:'../assets/images/Dice.png'      },
+                { name:'Roulette', img:'../assets/images/Roulette.png'  },
+                { name:'Coin Flip',img:'../assets/images/CoinFlip.png'  },
+                { name:'Plinko',   img:'../assets/images/Plinko.png'    }
+            ];
+            const count     = games.length;
+            const radius    = 400;  // Increased radius for better visibility
+            const stepAngle = 360 / count;
+            let rotation    = 0, velocity = 0, snapping = false;
+            const friction  = 0.95, minVel = 0.2;
 
-            function updateCarousel() {
-                cards.forEach((card, index) => {
-                    // Remove all positions
-                    card.removeAttribute('data-pos');
-                    
-                    // Calculate relative position
-                    const relativePos = (index - centerIndex + cards.length) % cards.length;
-                    
-                    // Assign new position
-                    if (relativePos === 0) {
-                        card.setAttribute('data-pos', 'center');
-                    } else if (relativePos === cards.length - 1 || relativePos === -1) {
-                        card.setAttribute('data-pos', 'left');
-                    } else if (relativePos === 1) {
-                        card.setAttribute('data-pos', 'right');
-                    }
+            const carousel = document.getElementById('carousel');
+            
+            // 2) Karten erzeugen & im Kreis verteilen
+            games.forEach((g,i) => {
+                const c = document.createElement('div');
+                c.className = 'card';
+                c.style.backgroundImage = `url(${g.img})`;
+                c.textContent = g.name;
+                c.style.transform = `rotateY(${i*stepAngle}deg) translateZ(${radius*0.5+100}px)`;
+                
+                // Add click handler for each card
+                c.addEventListener('click', () => {
+                    // Calculate target rotation to bring this card to front
+                    const targetRotation = -i * stepAngle;
+                    carousel.style.transition = 'transform 0.6s ease-out';
+                    carousel.style.transform = `rotateY(${targetRotation}deg)`;
+                    rotation = targetRotation;
+                    velocity = 0;
                 });
-            }
-
-            carousel.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                if (e.deltaY > 0) {
-                    centerIndex = (centerIndex + 1) % cards.length;
-                } else {
-                    centerIndex = (centerIndex - 1 + cards.length) % cards.length;
-                }
-                updateCarousel();
+                
+                carousel.appendChild(c);
             });
 
-            // Initial setup
-            updateCarousel();
+            // 3) Wheel-Event für Inertia
+            window.addEventListener('wheel', e => {
+                e.preventDefault();
+                if (!snapping) {
+                    velocity += e.deltaY * 0.02;  // Reduced sensitivity for smoother scrolling
+                }
+            }, { passive:false });
+
+            // 4) Animationsloop + Snap
+            function animate() {
+                if (!snapping) {
+                    if (Math.abs(velocity) > 0.001) {
+                        rotation += velocity;
+                        carousel.style.transform = `rotateY(${rotation}deg)`;
+                        velocity *= friction;
+                        if (Math.abs(velocity) < minVel) {
+                            snapping = true;
+                            const target = Math.round(rotation/stepAngle)*stepAngle;
+                            carousel.style.transition = 'transform 0.6s ease-out';
+                            carousel.style.transform  = `rotateY(${target}deg)`;
+                            rotation = target;
+                            velocity = 0;
+                            carousel.addEventListener('transitionend', () => {
+                                carousel.style.transition = '';
+                                snapping = false;
+                            }, { once:true });
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
         });
     </script>
 </body>
