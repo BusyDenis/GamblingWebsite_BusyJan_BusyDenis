@@ -1,0 +1,359 @@
+/* Game Container Styles */
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px;
+    background: var(--nav-bg);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+}
+
+.controls {
+    display: flex;
+    gap: 48px;
+}
+
+.bet-controls {
+    width: 320px;
+}
+
+.difficulty-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.difficulty-button {
+    flex: 1;
+    min-width: 70px;
+    padding: 12px;
+    background: var(--dark-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.difficulty-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.difficulty-button.active {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+}
+
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-group h3 {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.bet-input {
+    display: flex;
+    gap: 8px;
+}
+
+.bet-input input {
+    flex: 1;
+    padding: 12px;
+    background: var(--dark-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.bet-input button {
+    padding: 12px 16px;
+    background: var(--dark-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.bet-input button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.start-button {
+    width: 100%;
+    padding: 14px;
+    background: var(--gold);
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.start-button:hover {
+    background: var(--gold-hover);
+    transform: translateY(-2px);
+}
+
+/* Tower Grid */
+.towers-grid {
+    flex: 10;
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+    gap: 12px;
+    min-width: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 800px;
+    margin-left: 100px;
+}
+
+.tower-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    position: relative;
+    min-height: 80px;
+}
+
+.tower-cell {
+    flex: 1;
+    max-width: 140px;
+    aspect-ratio: 1;
+    background: var(--tower-cell-bg);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.tower-cell:not(.revealed-safe):not(.revealed-mine):hover {
+    border-color: var(--accent-purple);
+    background: rgba(140, 61, 206, 0.1);
+    transform: translateY(-2px);
+}
+
+.tower-cell.revealed-safe {
+    background: var(--accent-purple);
+    color: var(--text-primary);
+    animation: reveal-crystal 0.3s ease-out;
+    box-shadow: 0 0 20px rgba(140, 61, 206, 0.4);
+}
+
+.tower-cell.revealed-mine {
+    background: var(--tower-cell-bg);
+    animation: reveal-bomb 0.3s ease-out;
+    border-color: #ff4444;
+}
+
+.tower-cell.current-row {
+    border-color: var(--current-row-bg);
+    background: var(--current-row-bg);
+}
+
+/* Difficulty-specific styles */
+[data-difficulty="easy"] .tower-row {
+    max-width: 600px;
+}
+
+[data-difficulty="medium"] .tower-row {
+    max-width: 450px;
+}
+
+[data-difficulty="hard"] .tower-row {
+    max-width: 300px;
+}
+
+[data-difficulty="expert"] .tower-row {
+    max-width: 600px;
+}
+
+/* Animations */
+@keyframes reveal-crystal {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes reveal-bomb {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.game-stats {
+    display: flex;
+    gap: 16px;
+    margin: 24px 0;
+    padding: 16px;
+    background: var(--dark-bg);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.next-container,
+.profit-container {
+    flex: 1;
+    text-align: center;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.multiplier {
+    color: #4CAF50;
+}
+
+.demo-mode {
+    text-align: center;
+    color: var(--accent-purple);
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* Game Over Display */
+.game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.game-over-content {
+    background: var(--nav-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.game-over h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.game-over .multiplier {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.game-over .profit {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.game-over button {
+    padding: 1rem 2rem;
+    background: var(--gold);
+    border: none;
+    border-radius: 0.5rem;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.game-over button:hover {
+    background: var(--gold-hover);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .controls {
+        flex-direction: column;
+    }
+
+    .bet-controls {
+        width: 100%;
+    }
+
+    .towers-grid {
+        margin-top: 32px;
+    }
+
+    .tower-cell {
+        max-width: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        padding: 16px;
+    }
+
+    .tower-cell {
+        max-width: 80px;
+        min-height: 60px;
+    }
+
+    [data-difficulty="easy"] .tower-row,
+    [data-difficulty="expert"] .tower-row {
+        max-width: 400px;
+    }
+
+    [data-difficulty="medium"] .tower-row {
+        max-width: 300px;
+    }
+
+    [data-difficulty="hard"] .tower-row {
+        max-width: 200px;
+    }
+} 

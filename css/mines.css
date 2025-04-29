@@ -1,0 +1,297 @@
+/* Game Container Styles */
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--nav-bg);
+    border-radius: 1rem;
+    box-shadow: var(--card-shadow);
+}
+
+.controls {
+    display: flex;
+    gap: 2rem;
+}
+
+.bet-controls {
+    flex: 1;
+}
+
+.game-mode {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.mode-button {
+    flex: 1;
+    padding: 0.75rem;
+    background: var(--dark-bg);
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mode-button.active {
+    background: var(--accent-purple);
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group h3 {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.bet-input {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.bet-input input {
+    flex: 1;
+    padding: 0.75rem;
+    background: var(--dark-bg);
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+}
+
+.bet-input button {
+    padding: 0.75rem 1.5rem;
+    background: var(--dark-bg);
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.bet-input button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.grid-size-buttons,
+.mines-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.grid-button,
+.mines-button {
+    padding: 0.75rem 1.5rem;
+    background: var(--dark-bg);
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.grid-button:hover,
+.mines-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.grid-button.active,
+.mines-button.active {
+    background: var(--accent-purple);
+}
+
+.start-button {
+    width: 100%;
+    padding: 1rem;
+    background: var(--gold);
+    border: none;
+    border-radius: 0.5rem;
+    color: #000;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.start-button:hover {
+    background: var(--gold-hover);
+    transform: translateY(-2px);
+}
+
+.mines-grid {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    flex: 1;
+}
+
+.grid-5x5 { grid-template-columns: repeat(5, 1fr); }
+.grid-6x6 { grid-template-columns: repeat(6, 1fr); }
+.grid-7x7 { grid-template-columns: repeat(7, 1fr); }
+.grid-8x8 { grid-template-columns: repeat(8, 1fr); }
+
+.cell {
+    aspect-ratio: 1;
+    background: var(--dark-bg);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: 2px solid transparent;
+}
+
+.cell:hover {
+    border-color: var(--accent-purple);
+}
+
+.cell.revealed-safe {
+    background: var(--gold);
+    animation: reveal 0.3s ease-out;
+}
+
+.cell.revealed-mine {
+    background: #ff4444;
+    animation: reveal 0.3s ease-out;
+}
+
+@keyframes reveal {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.game-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--dark-bg);
+    border-radius: 0.5rem;
+}
+
+.next-container,
+.profit-container {
+    flex: 1;
+    text-align: center;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.next-value,
+.profit-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.multiplier {
+    color: #4CAF50;
+}
+
+.demo-mode {
+    text-align: center;
+    color: var(--accent-purple);
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Game Over Display */
+.game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.game-over-content {
+    background: var(--nav-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.game-over h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.game-over .multiplier {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.game-over .profit {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.game-over button {
+    padding: 1rem 2rem;
+    background: var(--gold);
+    border: none;
+    border-radius: 0.5rem;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.game-over button:hover {
+    background: var(--gold-hover);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+    }
+
+    .bet-controls {
+        width: 100%;
+    }
+
+    .mines-grid {
+        margin-top: 1rem;
+    }
+
+    .cell {
+        font-size: 1.5rem;
+    }
+} 

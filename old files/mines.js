@@ -340,4 +340,9 @@ class MinesGame {
             this.profitDisplay.textContent = (-this.currentBet).toFixed(2);
         }
     }
-} 
+}
+
+// Initialize game when document is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.minesGame = new MinesGame();
+}); 

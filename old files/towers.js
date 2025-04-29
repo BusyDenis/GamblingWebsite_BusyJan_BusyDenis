@@ -5,7 +5,6 @@ class TowersGame {
         this.startButton = document.querySelector('.start-button');
         this.difficultyButtons = document.querySelectorAll('.difficulty-button');
         this.profitDisplay = document.querySelector('.profit-container .stat-value');
-        this.nextMultiplierDisplay = document.querySelector('.next-container .stat-value');
         
         this.currentRow = 7; // Start from bottom
         this.gameActive = false;
@@ -90,7 +89,7 @@ class TowersGame {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'tower-row';
             rowDiv.setAttribute('data-multiplier', difficulty.multipliers[7 - row].toFixed(2) + 'x');
-            rowDiv.style.setProperty('--row-index', row);
+            rowDiv.style.setProperty('--row-index', row); // For staggered animation
             
             const rowCells = [];
             for (let col = 0; col < difficulty.columns; col++) {
@@ -98,10 +97,7 @@ class TowersGame {
                 cell.className = 'tower-cell';
                 cell.dataset.row = row;
                 cell.dataset.col = col;
-                cell.style.setProperty('--cell-index', col);
-                
-                // Display multiplier in cell
-                cell.textContent = difficulty.multipliers[7 - row].toFixed(2) + 'x';
+                cell.style.setProperty('--cell-index', col); // For staggered animation
                 
                 cell.addEventListener('click', () => this.handleCellClick(row, col));
                 rowDiv.appendChild(cell);
@@ -123,15 +119,18 @@ class TowersGame {
         this.bombs.clear();
         this.cells = [];
         
+        // Remove existing game over display if any
         if (this.gameOverDisplay) {
             this.gameOverDisplay.remove();
             this.gameOverDisplay = null;
         }
         
+        // Reset grid and create new cells based on current difficulty
         this.initializeGrid();
         
         const difficulty = this.difficulties[this.selectedDifficulty];
         
+        // Place bombs for the first row
         for (let i = 0; i < difficulty.bombs; i++) {
             let col;
             do {
@@ -141,7 +140,6 @@ class TowersGame {
         }
         
         this.currentMultiplier = 1;
-        this.updateMultipliers();
         this.updateProfit();
         this.startButton.textContent = 'Cash Out';
     }
@@ -153,23 +151,26 @@ class TowersGame {
         const isBomb = this.bombs.has(`${row},${col}`);
         
         if (isBomb) {
+            // Reveal all bombs in the current row
             this.cells[row].forEach((rowCell, colIndex) => {
                 if (this.bombs.has(`${row},${colIndex}`)) {
                     this.revealCell(row, colIndex, true);
                 }
             });
             
+            // Show game over display
             this.showGameOverDisplay(row);
             this.gameOver(false);
         } else {
             this.revealCell(row, col, false);
+            // Update multiplier and profit
             this.currentMultiplier = this.difficulties[this.selectedDifficulty].multipliers[7 - row];
-            this.updateMultipliers();
             this.updateProfit();
             
             if (row > 0) {
                 this.currentRow--;
                 this.updateCurrentRow();
+                // Place new bombs for next row
                 this.bombs.clear();
                 const difficulty = this.difficulties[this.selectedDifficulty];
                 for (let i = 0; i < difficulty.bombs; i++) {
@@ -334,19 +335,15 @@ class TowersGame {
         this.startButton.textContent = 'Start Game';
     }
 
-    updateMultipliers() {
-        if (this.nextMultiplierDisplay && this.currentRow > 0) {
-            const nextMultiplier = this.difficulties[this.selectedDifficulty].multipliers[7 - (this.currentRow - 1)];
-            this.nextMultiplierDisplay.textContent = nextMultiplier.toFixed(2) + 'x';
-        } else if (this.nextMultiplierDisplay) {
-            this.nextMultiplierDisplay.textContent = 'MAX';
-        }
-    }
-
     updateProfit() {
         if (this.profitDisplay) {
-            const profit = (this.currentBet * (this.currentMultiplier - 1)).toFixed(2);
+            const profit = (this.currentBet * this.currentMultiplier).toFixed(2);
             this.profitDisplay.textContent = profit;
         }
     }
-} 
+}
+
+// Initialize the game when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    new TowersGame();
+}); 
