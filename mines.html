@@ -91,17 +91,17 @@
             right: 0;
             left: 64px;
             height: 80px;
-            background: rgba(20, 20, 41, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(90deg, rgba(20, 20, 41, 0.98) 0%, rgba(37, 29, 86, 0.98) 100%);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 32px;
             z-index: 100;
             transition: left 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .navbar-brand {
@@ -109,6 +109,7 @@
             align-items: center;
             text-decoration: none;
             color: var(--text-primary);
+            margin-left: 160px;
         }
 
         .logo-container {
@@ -117,12 +118,34 @@
             text-decoration: none;
             height: 80px;
             padding: 8px 0;
+            position: relative;
+        }
+
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-container:hover::after {
+            opacity: 1;
         }
 
         .logo-image {
             height: 50px;
             width: auto;
             display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container:hover .logo-image {
+            transform: translateY(-2px);
         }
 
         .navbar-nav {
@@ -130,6 +153,7 @@
             gap: 40px;
             margin-left: auto;
             margin-right: auto;
+            position: relative;
         }
 
         .nav-link {
@@ -137,28 +161,20 @@
             text-decoration: none;
             font-size: 15px;
             font-weight: 500;
-            transition: color 0.2s ease;
-            padding: 8px 0;
+            transition: all 0.2s ease;
+            padding: 8px 16px;
             position: relative;
+            border-radius: 20px;
         }
 
         .nav-link:hover {
             color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0%;
-            height: 2px;
-            background: var(--accent-purple);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
+        .nav-link.active {
+            color: white;
+            background: rgba(140, 61, 206, 0.15);
         }
 
         /* Sidebar Styles */
@@ -168,14 +184,14 @@
             top: 0;
             height: 100vh;
             width: 64px;
-            background: rgba(14, 14, 25, 0.95);
+            background: linear-gradient(180deg, rgba(14, 14, 25, 0.98) 0%, rgba(25, 21, 48, 0.98) 100%);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.07);
             z-index: 1000;
             transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             overflow: hidden;
-            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
         }
 
         .sidebar.expanded {
@@ -197,18 +213,27 @@
         .nav-item {
             display: flex;
             align-items: center;
-            height: 40px;
+            height: 44px;
             padding: 0 24px;
             color: var(--text-secondary);
             text-decoration: none;
-            transition: color 0.2s ease, background 0.2s ease;
+            transition: all 0.2s ease;
             white-space: nowrap;
             position: relative;
+            margin: 4px 8px;
+            border-radius: 8px;
         }
 
         .nav-item:hover {
             background: rgba(255, 255, 255, 0.08);
             color: var(--text-primary);
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            color: var(--text-primary);
+            background: linear-gradient(90deg, rgba(140, 61, 206, 0.2), rgba(140, 61, 206, 0.05));
+            border-left: 3px solid var(--accent-purple);
         }
 
         .nav-item i {
@@ -216,12 +241,6 @@
             text-align: center;
             font-size: 16px;
             transition: all 0.2s ease;
-        }
-
-        .sidebar:not(.expanded) .nav-item i {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
         }
 
         .nav-item span {
@@ -559,22 +578,51 @@
         </div>
         <div class="navbar-nav">
             <a href="index.html" class="nav-link">Home</a>
-            <a href="#" class="nav-link">Games</a>
+            <a href="#" class="nav-link active">Games</a>
             <a href="#" class="nav-link">How It Works</a>
             <a href="#" class="nav-link">FAQ</a>
         </div>
-        <div class="user-account">
+        <!-- Auth UI - Shown when logged out -->
+        <div class="auth-buttons" id="logged-out-ui">
+            <a href="#" class="btn btn-login">Log In</a>
+            <a href="#" class="btn btn-signup">Sign Up Free</a>
+        </div>
+        <!-- User Account - Shown when logged in -->
+        <div class="user-account" id="logged-in-ui" style="display: none;">
             <div class="balance-display">
                 <i class="fas fa-coins"></i>
                 <span class="balance-amount">$0.00</span>
+                <i class="fas fa-chevron-down"></i>
             </div>
             <a href="#" class="deposit-btn">Deposit</a>
+            <div class="user-controls">
+                <button class="icon-btn" data-tooltip="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn" data-tooltip="Rewards">
+                    <i class="fas fa-gift"></i>
+                </button>
+                <button class="icon-btn" data-tooltip="Notifications">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <div class="user-profile">
+                    <div class="user-avatar" id="user-initials">DS</div>
+                    <span class="user-name" id="user-name">Denis Suciu</span>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
         </div>
     </nav>
 
     <aside class="sidebar">
         <nav class="sidebar-nav">
             <div class="nav-section">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
                 <a href="#" class="nav-item">
                     <i class="fas fa-gamepad"></i>
                     <span>Games</span>
@@ -591,6 +639,39 @@
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
+            </div>
+
+            <div class="nav-section">
+                <a href="#" class="nav-item">
+                    <i class="fas fa-gift"></i>
+                    <span>Rewards</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Live RTP</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Refer & Earn</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <a href="#" class="nav-item">
+                    <i class="fas fa-headset"></i>
+                    <span>Live Support</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                </a>
+            </div>
+
+            <div class="stats-footer">
+                <div class="stats-item">
+                    <span>Total Bets Placed:</span>
+                    <span class="stats-value">8,531,727,874</span>
+                </div>
             </div>
         </nav>
     </aside>

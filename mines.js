@@ -14,7 +14,7 @@ class MinesGame {
         this.gridSize = 25;
         this.currentBet = 0;
         this.currentProfit = 0;
-        this.houseEdge = 0.99;
+        this.houseEdge = 0.05; // 5% Hausvorteil
         
         this.assets = {
             coin: '<img src="coin.png" style="width: 100%; height: 100%; object-fit: contain;">',
@@ -173,16 +173,27 @@ class MinesGame {
         }
     }
 
-    calculateMultiplier(revealed) {
-        const remaining = this.gridSize - revealed;
-        const safeCells = remaining - this.mineCount;
+    calculateMultiplier(step) {
+        // Berechne verbleibende Felder und Minen
+        const remainingFields = this.gridSize - step;
+        const remainingMines = this.mineCount;
         
-        if (safeCells <= 0) return 0;
+        // Berechne sichere Felder
+        const safeFields = remainingFields - remainingMines;
         
-        const probability = safeCells / remaining;
-        const multiplier = (1 / probability) * this.houseEdge;
+        // Berechne Wahrscheinlichkeit für sicheres Feld
+        const probabilitySafe = safeFields / remainingFields;
         
-        return multiplier.toFixed(2);
+        // Berechne fairen Multiplikator
+        const fairMultiplier = 1 / probabilitySafe;
+        
+        // Ziehe Hausvorteil ab
+        const offeredMultiplier = fairMultiplier * (1 - this.houseEdge);
+        
+        // Runde auf 2 Dezimalstellen
+        const finalMultiplier = Math.floor(offeredMultiplier * 100) / 100;
+        
+        return finalMultiplier;
     }
 
     updateMultiplier() {
