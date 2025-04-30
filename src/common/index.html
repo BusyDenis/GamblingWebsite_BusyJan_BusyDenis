@@ -6,9 +6,466 @@
     <title>KeepRolling</title>
     <link rel="icon" type="image/png" href="../assets/images/KeepRolling_Black.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Locomotive Scroll CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
     <link rel="stylesheet" href="../assets/css/homepage.css">
+    <style>
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.7;
+            transition: opacity 0.5s ease;
+        }
+
+        #starfield.hidden {
+            opacity: 0;
+        }
+
+        .hero-banner {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Enhanced Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 64px;
+            height: 80px;
+            background: linear-gradient(90deg, 
+                rgba(20, 20, 41, 0.95) 0%, 
+                rgba(37, 29, 86, 0.95) 100%
+            );
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-secondary);
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(140, 61, 206, 0.1);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(140, 61, 206, 0.1);
+        }
+
+        .nav-link.active {
+            color: var(--text-primary);
+            background: rgba(140, 61, 206, 0.15);
+            box-shadow: 0 4px 15px rgba(140, 61, 206, 0.1);
+        }
+
+        /* Remove all text decorations for links */
+        a {
+            text-decoration: none;
+        }
+
+        .navbar-brand {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-container {
+            transition: transform 0.3s var(--transition-bounce);
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -100%;
+            width: 40px;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transform: translateY(-50%) skewX(-25deg);
+            transition: left 0.5s ease;
+        }
+
+        .logo-container:hover::before {
+            left: 200%;
+        }
+
+        /* Enhanced User Account Styles */
+        .user-account {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .balance-display {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .balance-display:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+            border-color: rgba(140, 61, 206, 0.3);
+        }
+
+        .balance-display i {
+            color: var(--gold);
+            transition: transform 0.3s ease;
+        }
+
+        .balance-display:hover i {
+            transform: rotate(15deg);
+        }
+
+        .deposit-btn {
+            background: linear-gradient(45deg, var(--gold), var(--gold-hover));
+            padding: 8px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s var(--transition-bounce);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.15);
+        }
+
+        .deposit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.25);
+            background: linear-gradient(45deg, var(--gold-hover), var(--gold));
+        }
+
+        /* Enhanced Auth Buttons Styles */
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn {
+            position: relative;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s var(--transition-bounce);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-login {
+            background: rgba(140, 61, 206, 0.1);
+            color: var(--text-primary);
+            border: 1px solid rgba(140, 61, 206, 0.3);
+        }
+
+        .btn-login:hover {
+            background: rgba(140, 61, 206, 0.2);
+            transform: translateY(-2px);
+            border-color: var(--accent-purple);
+            box-shadow: 0 4px 15px rgba(140, 61, 206, 0.2);
+        }
+
+        .btn-signup {
+            background: linear-gradient(45deg, var(--accent-purple), var(--accent-purple-light));
+            color: var(--text-primary);
+            border: 1px solid rgba(140, 61, 206, 0.3);
+            box-shadow: 0 4px 15px rgba(140, 61, 206, 0.2);
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(140, 61, 206, 0.3);
+            background: linear-gradient(45deg, var(--accent-purple-light), var(--accent-purple));
+        }
+
+        /* Add icons to buttons */
+        .btn-login::after {
+            content: '\f2f6';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-signup::after {
+            content: '\f234';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover::after {
+            transform: translateX(3px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .auth-buttons {
+                gap: 12px;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+
+        /* Responsive Navbar Adjustments */
+        @media (max-width: 1024px) {
+            .navbar-nav {
+                gap: 15px;
+            }
+
+            .nav-link {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 16px;
+            }
+
+            .navbar-brand {
+                margin-left: 60px;
+            }
+
+            .deposit-btn {
+                padding: 6px 16px;
+                font-size: 14px;
+            }
+        }
+
+        .faq-section {
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .faq-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--text-primary);
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .faq-column, .legal-column {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-column h3, .legal-column h3 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .faq-item, .legal-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-item:last-child, .legal-section:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .faq-item h4, .legal-section h4 {
+            color: var(--accent-purple);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .faq-item p, .legal-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .legal-link {
+            color: var(--accent-purple);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .legal-link:hover {
+            color: var(--accent-purple-light);
+        }
+
+        @media (max-width: 768px) {
+            .faq-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Add padding to main content to account for fixed navbar */
+        .main-content {
+            padding-top: 80px;
+        }
+
+        /* Game Description Animation Styles */
+        .game-description {
+            position: relative;
+            padding: 2rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-description.fade-out {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .game-description.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .game-description h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--text-primary), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
+        }
+
+        .game-description.fade-in h2 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .game-description p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease 0.3s, transform 0.4s ease 0.3s;
+        }
+
+        .game-description.fade-in p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .game-description .game-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease 0.4s, transform 0.4s ease 0.4s;
+        }
+
+        .game-description.fade-in .game-stats {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .game-description .max-win {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .game-description .max-win-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .game-description .play-now-btn {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease 0.5s, transform 0.4s ease 0.5s, all 0.3s ease;
+        }
+
+        .game-description.fade-in .play-now-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
+    <canvas id="starfield"></canvas>
     <div class="purple-orb orb-1"></div>
     <div class="purple-orb orb-2"></div>
 
@@ -19,15 +476,15 @@
             </a>
         </div>
         <div class="navbar-nav">
-            <a href="#" data-page="index.html" class="nav-link active">Home</a>
-            <a href="#" data-page="mines.html" class="nav-link">Games</a>
-            <a href="#" class="nav-link">How It Works</a>
-            <a href="#" class="nav-link">FAQ</a>
+            <a href="#hero" class="nav-link active" data-scroll-to="hero">Home</a>
+            <a href="#facts" class="nav-link" data-scroll-to="facts">Benefits</a>
+            <a href="#games" class="nav-link" data-scroll-to="games">Games</a>
+            <a href="#faq" class="nav-link" data-scroll-to="faq">FAQ</a>
         </div>
         <!-- Auth UI - Shown when logged out -->
         <div class="auth-buttons" id="logged-out-ui">
-            <a href="#" class="btn btn-login">Log In</a>
-            <a href="#" class="btn btn-signup">Sign Up Free</a>
+            <a href="../pages/auth.html?mode=login" class="btn btn-login">Log In</a>
+            <a href="../pages/auth.html?mode=register" class="btn btn-signup">Sign Up Free</a>
         </div>
         <!-- User Account - Shown when logged in -->
         <div class="user-account" id="logged-in-ui" style="display: none;">
@@ -48,8 +505,7 @@
                     <i class="fas fa-bell"></i>
                 </button>
                 <div class="user-profile">
-                    <div class="user-avatar" id="user-initials">DS</div>
-                    <span class="user-name" id="user-name">Denis Suciu</span>
+    
                 </div>
                 <a href="#" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i> Logout
@@ -70,25 +526,21 @@
                     <i class="fas fa-home"></i>
                     <span class="nav-text">Home</span>
                 </a>
-                <a href="#" data-page="mines.html" class="nav-item">
+                <a href="#" data-page="benefits.html" class="nav-item">
+                    <i class="fas fa-gift"></i>
+                    <span class="nav-text">Benefits</span>
+                </a>
+                <a href="#" data-page="library.html" class="nav-item">
                     <i class="fas fa-gamepad"></i>
                     <span class="nav-text">Games</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-chart-line"></i>
-                    <span class="nav-text">Statistics</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fas fa-users"></i>
-                    <span class="nav-text">Community</span>
+                <a href="#" data-page="about.html" class="nav-item">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="nav-text">About Us</span>
                 </a>
             </div>
 
             <div class="nav-section">
-                <a href="#" class="nav-item">
-                    <i class="fas fa-gift"></i>
-                    <span class="nav-text">Rewards</span>
-                </a>
                 <a href="#" class="nav-item">
                     <i class="fas fa-chart-line"></i>
                     <span class="nav-text">Live RTP</span>
@@ -113,71 +565,71 @@
         </nav>
     </aside>
 
-    <main id="content" class="main-content">
+    <main id="content" class="main-content" data-scroll-container>
         <!-- Hero Banner -->
-        <section class="hero-banner">
-            <div class="hero-content animate fade-in-up">
-                <h1>Experience Risk-Free Gaming</h1>
-                <p>Join our simulation platform and practice your strategies:</p>
+        <section id="hero" class="hero-banner">
+            <div class="hero-content">
+                <h1 data-scroll data-scroll-speed="1" data-scroll-delay="0.1">Experience Risk-Free Gambling</h1>
+                <p data-scroll data-scroll-speed="0.5" data-scroll-delay="0.2">Join our simulation platform and practice your strategies:</p>
                 <div class="benefits-list">
-                    <div class="benefit-item animate fade-in-left delay-1">
-                        <i class="fas fa-coins"></i>
-                        <span>Virtual Currency to Practice</span>
+                    <div class="benefit-item" data-scroll data-scroll-speed="0.7">
+                        <i class="fas fa-coins" data-scroll data-scroll-speed="1.2"></i>
+                        <span data-scroll data-scroll-speed="0.8">Virtual Currency to Practice</span>
                     </div>
-                    <div class="benefit-item animate fade-in-left delay-2">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Risk-Free Environment</span>
+                    <div class="benefit-item" data-scroll data-scroll-speed="0.7">
+                        <i class="fas fa-shield-alt" data-scroll data-scroll-speed="1.2"></i>
+                        <span data-scroll data-scroll-speed="0.8">Risk-Free Environment</span>
                     </div>
-                    <div class="benefit-item animate fade-in-right delay-2">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Learn Game Strategies</span>
+                    <div class="benefit-item" data-scroll data-scroll-speed="0.7">
+                        <i class="fas fa-chart-line" data-scroll data-scroll-speed="1.2"></i>
+                        <span data-scroll data-scroll-speed="0.8">Learn Game Strategies</span>
                     </div>
-                    <div class="benefit-item animate fade-in-right delay-1">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Real Casino Experience</span>
+                    <div class="benefit-item" data-scroll data-scroll-speed="0.7">
+                        <i class="fas fa-gamepad" data-scroll data-scroll-speed="1.2"></i>
+                        <span data-scroll data-scroll-speed="0.8">Real Casino Experience</span>
                     </div>
                 </div>
                 <div class="cta-buttons animate fade-in-up delay-3">
-                    <a href="#" class="cta-button signup-cta">
-                        <span>Start Playing For Fun</span>
+                    <a href="../pages/auth.html?mode=register" class="cta-button signup-cta">
+                        <span>Start Playing</span>
                     </a>
                     <div class="login-text">
                         Already have an account? 
-                        <a href="#" class="login-link">Log In</a>
+                        <a href="../pages/auth.html?mode=login" class="login-link">Log In</a>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Facts Section -->
-        <section class="facts-section">
-            <div class="facts-container scroll-fade-up">
+        <section id="facts" class="facts-section">
+            <div class="facts-container">
                 <div class="facts-grid">
                     <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-trophy"></i>
+                        <div class="fact-icon" data-scroll data-scroll-speed="0.5">
+                            <i class="fas fa-trophy" data-scroll data-scroll-speed="1"></i>
                         </div>
-                        <div class="fact-value">1,000,000</div>
-                        <div class="fact-label">Virtual Credits</div>
-                        <p class="fact-description">Practice with our virtual currency and experience the thrill without any risk</p>
+                        <div class="fact-value" data-scroll data-scroll-speed="0.3">1,000,000</div>
+                        <div class="fact-label" data-scroll data-scroll-speed="0.4">Virtual Credits</div>
+                        <p class="fact-description" data-scroll data-scroll-speed="0.2">Practice with our virtual currency and experience the thrill without any risk</p>
                     </div>
                     
                     <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-bolt"></i>
+                        <div class="fact-icon" data-scroll data-scroll-speed="0.5">
+                            <i class="fas fa-bolt" data-scroll data-scroll-speed="1"></i>
                         </div>
-                        <div class="fact-value">1000x</div>
-                        <div class="fact-label">Max Multiplier</div>
-                        <p class="fact-description">Test different strategies with high multipliers in a safe environment</p>
+                        <div class="fact-value" data-scroll data-scroll-speed="0.3">1000x</div>
+                        <div class="fact-label" data-scroll data-scroll-speed="0.4">Max Multiplier</div>
+                        <p class="fact-description" data-scroll data-scroll-speed="0.2">Test different strategies with high multipliers in a safe environment</p>
                     </div>
                     
                     <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-users"></i>
+                        <div class="fact-icon" data-scroll data-scroll-speed="0.5">
+                            <i class="fas fa-users" data-scroll data-scroll-speed="1"></i>
                         </div>
-                        <div class="fact-value">1M+</div>
-                        <div class="fact-label">Practice Games</div>
-                        <p class="fact-description">Join thousands of players learning and practicing casino games</p>
+                        <div class="fact-value" data-scroll data-scroll-speed="0.3">1M+</div>
+                        <div class="fact-label" data-scroll data-scroll-speed="0.4">Practice Games</div>
+                        <p class="fact-description" data-scroll data-scroll-speed="0.2">Join thousands of players learning and practicing casino games</p>
                     </div>
                 </div>
             </div>
@@ -186,63 +638,60 @@
         <!-- Benefits Section -->
         <section class="benefits-section">
             <div class="benefits-container">
-                <div class="benefits-header scroll-fade-up">
-                    <h2 class="benefits-title">Why Choose KeepRolling Simulator</h2>
-                    <p class="benefits-subtitle">Perfect your gaming strategies in a risk-free environment</p>
+                <div class="benefits-header">
+                    <h2 class="benefits-title" data-scroll data-scroll-speed="0.5">Why Choose KeepRolling Simulator</h2>
+                    <p class="benefits-subtitle" data-scroll data-scroll-speed="0.3">Perfect your gaming strategies in a risk-free environment</p>
                 </div>
                 
                 <div class="benefits-grid">
-                    <div class="benefit-card scroll-fade-left">
-                        <div class="benefit-icon">
-                            <i class="fas fa-shield-alt"></i>
+                    <div class="benefit-card">
+                        <div class="benefit-icon" data-scroll data-scroll-speed="0.5">
+                            <i class="fas fa-shield-alt" data-scroll data-scroll-speed="1"></i>
                         </div>
                         <div class="benefit-content">
-                            <h3 class="benefit-title">Safe Practice Environment</h3>
-                            <p class="benefit-text">Learn and practice casino games without the risk of losing real money</p>
+                            <h3 class="benefit-title" data-scroll data-scroll-speed="0.4">Safe Practice Environment</h3>
+                            <p class="benefit-text" data-scroll data-scroll-speed="0.2">Learn and practice casino games without the risk of losing real money</p>
                         </div>
                     </div>
                     
-                    <div class="benefit-card scroll-fade-right">
-                        <div class="benefit-icon">
-                            <i class="fas fa-graduation-cap"></i>
+                    <div class="benefit-card">
+                        <div class="benefit-icon" data-scroll data-scroll-speed="0.5">
+                            <i class="fas fa-graduation-cap" data-scroll data-scroll-speed="1"></i>
                         </div>
                         <div class="benefit-content">
-                            <h3 class="benefit-title">Learn Strategies</h3>
-                            <p class="benefit-text">Develop and test your gaming strategies with virtual currency</p>
+                            <h3 class="benefit-title" data-scroll data-scroll-speed="0.4">Learn Strategies</h3>
+                            <p class="benefit-text" data-scroll data-scroll-speed="0.2">Develop and test your gaming strategies with virtual currency</p>
                         </div>
                     </div>
                     
-                    <div class="benefit-card scroll-fade-left">
-                        <div class="benefit-icon">
-                            <i class="fas fa-chart-bar"></i>
+                    <div class="benefit-card">
+                        <div class="benefit-icon" data-scroll data-scroll-speed="0.5">
+                            <i class="fas fa-chart-bar" data-scroll data-scroll-speed="1"></i>
                         </div>
                         <div class="benefit-content">
-                            <h3 class="benefit-title">Track Progress</h3>
-                            <p class="benefit-text">Monitor your performance and improve your gaming skills over time</p>
+                            <h3 class="benefit-title" data-scroll data-scroll-speed="0.4">Track Progress</h3>
+                            <p class="benefit-text" data-scroll data-scroll-speed="0.2">Monitor your performance and improve your gaming skills over time</p>
                         </div>
                     </div>
                     
-                    <div class="benefit-card scroll-fade-right">
-                        <div class="benefit-icon">
-                            <i class="fas fa-gamepad"></i>
+                    <div class="benefit-card">
+                        <div class="benefit-icon" data-scroll data-scroll-speed="0.5">
+                            <i class="fas fa-gamepad" data-scroll data-scroll-speed="1"></i>
                         </div>
                         <div class="benefit-content">
-                            <h3 class="benefit-title">Realistic Experience</h3>
-                            <p class="benefit-text">Enjoy the authentic casino atmosphere without financial pressure</p>
+                            <h3 class="benefit-title" data-scroll data-scroll-speed="0.4">Realistic Experience</h3>
+                            <p class="benefit-text" data-scroll data-scroll-speed="0.2">Enjoy the authentic casino atmosphere without financial pressure</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="game-banner scroll-fade-up">
+        <section id="games" class="game-banner scroll-fade-up">
             <div class="game-banner-container">
             <div class="carousel3d">
                 <div id="carousel"></div>
-                <div class="carousel-hint">
-                    <i class="fas fa-mouse"></i>
-                    <span>Scroll to explore games</span>
-                        </div>
+            
                     </div>
                     <div class="game-description">
                         
@@ -250,13 +699,91 @@
             </div>
         </section>
 
+        <!-- Add FAQ Section -->
+        <section id="faq" class="faq-section">
+            <div class="faq-container">
+                <h2 class="section-title" data-scroll data-scroll-speed="0.5">FAQ & Rechtliches</h2>
+                
+                <div class="faq-grid">
+                    <!-- FAQ Column -->
+                    <div class="faq-column">
+                        <h3>Häufig gestellte Fragen</h3>
+                        <div class="faq-item" data-scroll data-scroll-speed="0.3">
+                            <h4>Was ist KeepRolling?</h4>
+                            <p>KeepRolling ist eine Simulations-Plattform für Casino-Spiele, die es Ihnen ermöglicht, ohne finanzielles Risiko zu spielen und Strategien zu entwickeln.</p>
+                        </div>
+                        <div class="faq-item" data-scroll data-scroll-speed="0.3">
+                            <h4>Ist das Spielen kostenlos?</h4>
+                            <p>Ja, alle Spiele sind komplett kostenlos. Sie spielen mit virtuellem Geld ohne echtes Geld zu riskieren.</p>
+                        </div>
+                        <div class="faq-item" data-scroll data-scroll-speed="0.3">
+                            <h4>Wie funktioniert das Guthaben-System?</h4>
+                            <p>Sie erhalten regelmäßig kostenloses virtuelles Guthaben zum Üben und Spielen.</p>
+                        </div>
+                    </div>
+
+                    <!-- Legal Column -->
+                    <div class="legal-column">
+                        <h3>Rechtliche Informationen</h3>
+                        <div class="legal-section" data-scroll data-scroll-speed="0.3">
+                            <h4>Impressum</h4>
+                            <p>KeepRolling GmbH<br>
+                            Musterstraße 123<br>
+                            12345 Musterstadt<br>
+                            Schweiz</p>
+                            <p>Email: info@keeprolling.ch<br>
+                            Tel: +41 123 456 789</p>
+                        </div>
+                        <div class="legal-section" data-scroll data-scroll-speed="0.3">
+                            <h4>Datenschutz</h4>
+                            <p>Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Alle Informationen werden verschlüsselt übertragen und sicher gespeichert.</p>
+                            <a href="#" class="legal-link">Vollständige Datenschutzerklärung</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Scripts -->
     <script src="../games/Mines/mines.js"></script>
     <script src="../games/Towers/towers.js"></script>
     <script src="../assets/js/carousel.js"></script>
+    <!-- Locomotive Scroll JS -->
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
     <script>
+        // Locomotive Scroll Initialization
+        let locomotiveScroll;
+        
+        function initLocomotiveScroll() {
+            if (locomotiveScroll) locomotiveScroll.destroy();
+            
+            locomotiveScroll = new LocomotiveScroll({
+                el: document.querySelector('[data-scroll-container]'),
+                smooth: true,
+                smoothMobile: true,
+                multiplier: 1,
+                lerp: 0.1
+            });
+
+            // Initialize starfield after Locomotive Scroll
+            initStarfield();
+
+            // Update Locomotive Scroll after all images and content are loaded
+            window.addEventListener('load', () => {
+                locomotiveScroll.update();
+            });
+
+            // Update on window resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    locomotiveScroll.update();
+                }, 250);
+            });
+        }
+
         // Scroll Animation Observer
         const observerOptions = {
             root: null,
@@ -298,20 +825,52 @@
 
         async function loadContent(page) {
             // 1) Stylesheet für Spiele nachladen
-            if (page !== 'index.html' && !document.getElementById(page + '-css')) {
+            if (page !== 'index.html') {
+                let cssPath;
+                switch(page) {
+                    case 'mines.html':
+                        cssPath = '../assets/css/mines.css';
+                        break;
+                    case 'towers.html':
+                        cssPath = '../assets/css/towers.css';
+                        break;
+                    case 'library.html':
+                        cssPath = '../assets/css/library.css';
+                        break;
+                    default:
+                        cssPath = '../assets/css/' + page.replace('.html','.css');
+                }
+
+                if (!document.getElementById(page + '-css')) {
                 const link = document.createElement('link');
                 link.rel = 'stylesheet';
-                link.id  = page + '-css';
-                link.href= '../assets/css/' + page.replace('.html','.css');
+                    link.id  = page + '-css';
+                    link.href = cssPath;
                 document.head.appendChild(link);
                 await new Promise(r => link.onload = r);
+                }
             }
             
             // 2) HTML-Fragment laden
-            const res = await fetch(page);
-            const text= await res.text();
+            let pagePath;
+            switch(page) {
+                case 'mines.html':
+                    pagePath = '../games/Mines/mines.html';
+                    break;
+                case 'towers.html':
+                    pagePath = '../games/Towers/towers.html';
+                    break;
+                case 'library.html':
+                    pagePath = '../games/library.html';
+                    break;
+                default:
+                    pagePath = page;
+            }
+
+            const res = await fetch(pagePath);
+            const text = await res.text();
             const doc = new DOMParser().parseFromString(text,'text/html');
-            const main= doc.querySelector('main');
+            const main = doc.querySelector('main');
             document.getElementById('content').innerHTML = main.innerHTML;
             
             // 3) Initialisierung
@@ -323,6 +882,9 @@
                 initAnimations();
                 initParallax();
             }
+            
+            // Initialize/Update Locomotive Scroll after content load
+            initLocomotiveScroll();
 
             // 4) Active-Link aktualisieren
             document.querySelectorAll('[data-page].active')
@@ -371,11 +933,7 @@
             const stepAngle = 360 / count;
             let radius      = 400,
                 rotation    = 0,
-                velocity    = 0,
-                snapping    = false,
-                currentGame = 0,
-                friction    = 0.95,
-                minVel      = 0.2;
+                currentGame = 0;
 
             // DOM‐Container sichern
             const content   = document.getElementById('content');
@@ -386,16 +944,33 @@
 
             function updateDesc(i) {
                 const g = games[i];
-                desc.innerHTML = `
-                    <h2>${g.name}</h2>
-                    <p>${g.instructions}</p>
-                    <div class="game-stats">
-                        <div class="max-win">${g.maxWin}</div>
-                        <div class="max-win-label">Max Win</div>
-                    </div>
-                    <a href="#" data-page="${g.pagePath}" class="play-now-btn">
-                        <span>Play Now</span> <i class="fas fa-play-circle"></i>
-                    </a>`;
+                const descElement = desc;
+                
+                // Add fade-out class
+                descElement.classList.add('fade-out');
+                descElement.classList.remove('fade-in');
+                
+                // Wait for fade-out animation
+                setTimeout(() => {
+                    // Update content
+                    descElement.innerHTML = `
+                        <h2>${g.name}</h2>
+                        <p>${g.instructions}</p>
+                        <div class="game-stats">
+                            <div class="max-win">${g.maxWin}</div>
+                            <div class="max-win-label">Max Win</div>
+                        </div>
+                        <a href="../pages/auth.html" class="play-now-btn">
+                            <span>Play Now</span> <i class="fas fa-play-circle"></i>
+                        </a>`;
+                    
+                    // Force reflow
+                    descElement.offsetHeight;
+                    
+                    // Add fade-in class
+                    descElement.classList.remove('fade-out');
+                    descElement.classList.add('fade-in');
+                }, 300); // Match this with the fade-out transition duration
             }
 
             // Karten initial erzeugen
@@ -408,7 +983,6 @@
                 c.addEventListener('click', () => {
                     currentGame = i;
                     rotation    = -i*stepAngle;
-                    velocity    = 0;
                     carousel.style.transition = 'transform 0.6s ease-out';
                     carousel.style.transform  = `rotateY(${rotation}deg)`;
                     updateDesc(i);
@@ -416,7 +990,7 @@
                 carousel.appendChild(c);
             });
 
-            // === NEU: Prev/Next-Buttons mit endloser Rotation ===
+            // Prev/Next-Buttons mit endloser Rotation
             ['prev','next'].forEach(dir => {
                 const btn = document.createElement('button');
                 btn.className = `carousel-nav ${dir}`;
@@ -430,9 +1004,8 @@
                     rotation += (dir==='prev' ? +stepAngle : -stepAngle);
 
                     // 2) Transform anwenden
-                    carousel.style.transition = 'transform 0.6s ease-out';
+                            carousel.style.transition = 'transform 0.6s ease-out';
                     carousel.style.transform  = `rotateY(${rotation}deg)`;
-                    velocity = 0;
 
                     // 3) Neuen Index aus dem absoluten Winkel berechnen
                     let norm = -rotation % 360;
@@ -444,49 +1017,187 @@
                 });
             });
 
-            // Wheel-Handling
-            carousel3d.addEventListener('wheel', e => {
-                e.preventDefault();
-                if (!snapping) velocity += e.deltaY * 0.02;
-            }, { passive:false });
-
-            // Animation‐Loop mit Snapping
-            function animate() {
-                if (!snapping && Math.abs(velocity) > 0.001) {
-                        rotation += velocity;
-                        carousel.style.transform = `rotateY(${rotation}deg)`;
-                        velocity *= friction;
-
-                    // aktuellen Index ermitteln
-                    let norm = -rotation % 360;
-                    if (norm < 0) norm += 360;
-                    const idx = Math.round(norm / stepAngle) % count;
-                    if (idx !== currentGame) {
-                        currentGame = idx;
-                        updateDesc(idx);
-                    }
-
-                    // snapping …
-                        if (Math.abs(velocity) < minVel) {
-                            snapping = true;
-                            const target = Math.round(rotation/stepAngle)*stepAngle;
-                        rotation = target;
-                            carousel.style.transition = 'transform 0.6s ease-out';
-                            carousel.style.transform  = `rotateY(${target}deg)`;
-                            velocity = 0;
-                            carousel.addEventListener('transitionend', () => {
-                                carousel.style.transition = '';
-                                snapping = false;
-                            }, { once:true });
-                    }
-                }
-                requestAnimationFrame(animate);
-            }
-            animate();
-
             // Erstbeschreibung
             updateDesc(0);
         }
+
+        // Starfield initialization
+        class Star {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.reset();
+            }
+
+            reset() {
+                const width = this.canvas.width;
+                const height = this.canvas.height;
+                
+                this.x = (Math.random() - 0.5) * width * 2;
+                this.y = (Math.random() - 0.5) * height * 2;
+                this.z = Math.random() * 1000 + 1;
+                
+                this.px = this.x;
+                this.py = this.y;
+                this.pz = this.z;
+            }
+
+            update(baseSpeed, scrollSpeed) {
+                this.pz = this.z;
+                this.z -= (baseSpeed + scrollSpeed);
+                
+                if (this.z <= 1) {
+                    this.reset();
+                }
+                
+                this.px = this.x;
+                this.py = this.y;
+            }
+
+            draw(ctx) {
+                const width = this.canvas.width;
+                const height = this.canvas.height;
+                
+                const sx = (this.x / this.z) * width + width / 2;
+                const sy = (this.y / this.z) * height + height / 2;
+                const px = (this.x / this.pz) * width + width / 2;
+                const py = (this.y / this.pz) * height + height / 2;
+                
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                ctx.lineTo(sx, sy);
+                ctx.stroke();
+            }
+        }
+
+        function initStarfield() {
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            
+            // Get theme colors
+            const style = getComputedStyle(document.documentElement);
+            const colors = [
+                style.getPropertyValue('--accent-purple').trim(),
+                style.getPropertyValue('--accent-purple-light').trim(),
+                style.getPropertyValue('--text-primary').trim(),
+                style.getPropertyValue('--text-secondary').trim(),
+                style.getPropertyValue('--gold').trim()
+            ];
+            
+            // Increased star count
+            const STAR_COUNT = window.matchMedia('(max-width: 768px)').matches ? 200 : 400;
+            
+            let stars = [];
+            let scrollSpeed = 0;
+            const BASE_SPEED = 3;
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            function createStars() {
+                stars = Array.from({ length: STAR_COUNT }, () => new Star(canvas));
+            }
+            
+            function animate() {
+                ctx.fillStyle = 'rgba(15, 15, 26, 0.15)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                stars.forEach(star => {
+                    // Random color from the theme colors array
+                    ctx.strokeStyle = colors[Math.floor(Math.random() * colors.length)];
+                    ctx.lineWidth = Math.random() * 2 + 0.5;
+                    
+                    star.update(BASE_SPEED, scrollSpeed);
+                    star.draw(ctx);
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            // Initialize
+            resizeCanvas();
+            createStars();
+            animate();
+            
+            // Event listeners
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                createStars();
+            });
+            
+            // Update scroll speed from Locomotive Scroll
+            if (locomotiveScroll) {
+                locomotiveScroll.on('scroll', ({ scroll }) => {
+                    scrollSpeed = Math.abs(scroll.speed) * 50;
+                    
+                    // Show/hide starfield based on scroll position
+                    const heroSection = document.querySelector('.hero-banner');
+                    const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+                    
+                    if (scroll.y > heroBottom) {
+                        canvas.classList.add('hidden');
+                    } else {
+                        canvas.classList.remove('hidden');
+                    }
+                });
+            }
+        }
+
+        // Add smooth scroll handling
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle navigation clicks
+            document.querySelectorAll('[data-scroll-to]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-scroll-to');
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection && locomotiveScroll) {
+                        // Update active state
+                        document.querySelectorAll('.nav-link').forEach(navLink => {
+                            navLink.classList.remove('active');
+                        });
+                        link.classList.add('active');
+
+                        // Scroll to section
+                        locomotiveScroll.scrollTo(targetSection, {
+                            offset: -100,
+                            duration: 1000,
+                            easing: [0.25, 0.00, 0.35, 1.00]
+                        });
+                    }
+                });
+            });
+
+            // Update active section on scroll
+            if (locomotiveScroll) {
+                locomotiveScroll.on('scroll', (args) => {
+                    const sections = ['hero', 'facts', 'games', 'faq'];
+                    let currentSection = sections[0];
+
+                    sections.forEach(section => {
+                        const element = document.getElementById(section);
+                        if (element) {
+                            const rect = element.getBoundingClientRect();
+                            if (rect.top <= 150 && rect.bottom >= 150) {
+                                currentSection = section;
+                            }
+                        }
+                    });
+
+                    // Update navigation active state
+                    document.querySelectorAll('.nav-link').forEach(link => {
+                        const targetSection = link.getAttribute('data-scroll-to');
+                        if (targetSection === currentSection) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                });
+            }
+        });
     </script>
 </body>
 </html> 

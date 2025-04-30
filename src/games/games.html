@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spielebibliothek - Casino Royal</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/games.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-container">
+                <a href="../index.html" class="logo">Casino Royal</a>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="games.html" class="active">Spiele</a>
+                <a href="../about.html">Über uns</a>
+                <a href="../contact.html">Kontakt</a>
+            </div>
+            <div class="auth-buttons">
+                <button class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login
+                </button>
+                <button class="signup-btn">
+                    <i class="fas fa-user-plus"></i>
+                    Registrieren
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <canvas id="starfield"></canvas>
+        <div class="hero-content">
+            <h1>Spielebibliothek</h1>
+            <p>Entdecke unsere Auswahl an spannenden Casino-Spielen</p>
+        </div>
+    </div>
+
+    <!-- Balance Section -->
+    <div class="balance-container">
+        <div class="balance-card">
+            <i class="fas fa-coins balance-icon"></i>
+            <div class="balance-info">
+                <h2>Ihr Kontostand</h2>
+                <p class="balance-amount">CHF <span id="currentBalance">1000.00</span></p>
+            </div>
+            <button class="deposit-btn">
+                <i class="fas fa-plus"></i>
+                Einzahlen
+            </button>
+        </div>
+    </div>
+
+    <!-- Games Grid -->
+    <section class="games-grid">
+        <h2>Verfügbare Spiele</h2>
+        <div class="games-container">
+            <!-- Game cards will be added here -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Casino Royal</h3>
+                <p>Ihr vertrauenswürdiges Online Casino</p>
+            </div>
+            <div class="footer-section">
+                <h3>Links</h3>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="games.html">Spiele</a></li>
+                    <li><a href="../about.html">Über uns</a></li>
+                    <li><a href="../contact.html">Kontakt</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Kontakt</h3>
+                <p>Email: info@casino-royal.ch</p>
+                <p>Tel: +41 123 456 789</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Casino Royal. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <script src="../assets/js/starfield.js"></script>
+    <script src="../assets/js/games.js"></script>
+</body>
+</html> 
