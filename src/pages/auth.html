@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="../assets/images/KeepRolling_Black.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/auth.css">
+    <script src="https://accounts.google.com/gsi/client" async></script>
 </head>
 <body>
     <canvas id="starfield"></canvas>
@@ -26,6 +27,37 @@
 
         <!-- Auth Forms Container -->
         <div class="auth-forms">
+            <!-- Username Setup Form (initially hidden) -->
+            <form id="usernameSetupForm" class="auth-form" style="display: none;">
+                <h2>Choose Your Username</h2>
+                <p class="form-subtitle">Pick a unique username for the leaderboard</p>
+                
+                <div class="form-group">
+                    <div class="input-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" placeholder="Enter username" required
+                               pattern="[a-zA-Z0-9_]{3,20}">
+                    </div>
+                </div>
+
+                <div class="requirements">
+                    <h3>Username Requirements:</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 3-20 characters long</li>
+                        <li><i class="fas fa-check"></i> Letters, numbers, and underscores only</li>
+                        <li><i class="fas fa-check"></i> Must be unique</li>
+                        <li><i class="fas fa-times"></i> No inappropriate words</li>
+                    </ul>
+                </div>
+
+                <div id="usernameError" class="error-message" style="display: none;"></div>
+
+                <button type="submit" class="auth-button">
+                    <span>Set Username</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
             <!-- Login Form -->
             <form id="loginForm" class="auth-form active">
                 <h2>Welcome Back!</h2>
@@ -64,9 +96,21 @@
                 <div class="social-auth">
                     <p>Or continue with</p>
                     <div class="social-buttons">
-                        <button type="button" class="social-btn google">
-                            <i class="fab fa-google"></i>
-                        </button>
+                        <div id="g_id_onload"
+                             data-client_id="397343034720-6rac7k12okii11u2m8h1kou3a3q1gtp1.apps.googleusercontent.com"
+                             data-context="signin"
+                             data-ux_mode="popup"
+                             data-callback="handleCredentialResponse"
+                             data-auto_prompt="false">
+                        </div>
+                        <div class="g_id_signin"
+                             data-type="standard"
+                             data-shape="rectangular"
+                             data-theme="outline"
+                             data-text="signin_with"
+                             data-size="large"
+                             data-logo_alignment="left">
+                        </div>
                         <button type="button" class="social-btn facebook">
                             <i class="fab fa-facebook-f"></i>
                         </button>
@@ -136,9 +180,14 @@
                 <div class="social-auth">
                     <p>Or sign up with</p>
                     <div class="social-buttons">
-                        <button type="button" class="social-btn google">
-                            <i class="fab fa-google"></i>
-                        </button>
+                        <div class="g_id_signin"
+                             data-type="standard"
+                             data-shape="rectangular"
+                             data-theme="outline"
+                             data-text="signup_with"
+                             data-size="large"
+                             data-logo_alignment="left">
+                        </div>
                         <button type="button" class="social-btn facebook">
                             <i class="fab fa-facebook-f"></i>
                         </button>
@@ -317,7 +366,203 @@
 
             // Update forms height on window resize
             window.addEventListener('resize', updateFormsHeight);
+
+            // Initialize Google Sign-In
+            google.accounts.id.initialize({
+                client_id: '397343034720-6rac7k12okii11u2m8h1kou3a3q1gtp1.apps.googleusercontent.com',
+                callback: handleCredentialResponse,
+                auto_select: false,
+                cancel_on_tap_outside: true
+            });
+
+            // Render the button
+            google.accounts.id.renderButton(
+                document.querySelector('.g_id_signin'),
+                { theme: 'outline', size: 'large' }
+            );
         });
+
+        // Update the style for Google Sign-In buttons
+        const style = document.createElement('style');
+        style.textContent = `
+            .social-buttons {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 15px;
+                align-items: center;
+            }
+
+            .g_id_signin {
+                width: auto !important;
+                margin-right: 10px;
+            }
+
+            .social-buttons iframe {
+                margin: 0 !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        function handleCredentialResponse(response) {
+            console.log("Google response received:", response);
+            
+            if (!response.credential) {
+                console.error("No credential received");
+                return;
+            }
+
+            fetch('http://localhost:3000/auth/google/callback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_token: response.credential
+                }),
+                credentials: 'include'
+            })
+            .then(res => {
+                console.log("Server response status:", res.status);
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log("Vollständige Benutzerdaten vom Server:", data);
+                if (data.success) {
+                    // Store user info in localStorage
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    if (data.requireUsername) {
+                        // Show username setup form instead of redirecting
+                        document.querySelectorAll('.auth-form').forEach(form => form.style.display = 'none');
+                        document.getElementById('usernameSetupForm').style.display = 'block';
+                        updateFormsHeight();
+                    } else {
+                        console.log("Redirecting to main page...");
+                        window.location.href = '../common/index.html';
+                    }
+                } else {
+                    console.error('Login failed:', data.message);
+                    alert('Login failed: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error during login:', error);
+                alert('An error occurred during login. Please try again.');
+            });
+        }
+
+        // Add username setup form handling
+        document.getElementById('usernameSetupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const errorElement = document.getElementById('usernameError');
+
+            try {
+                const response = await fetch('http://localhost:3000/auth/set-username', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username }),
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update stored user data
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    // Redirect to main page
+                    window.location.href = '../common/index.html';
+                } else {
+                    errorElement.textContent = data.message;
+                    errorElement.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error setting username:', error);
+                errorElement.textContent = 'An error occurred. Please try again.';
+                errorElement.style.display = 'block';
+            }
+        });
+
+        // Check if we're in login mode
+        window.onload = function() {
+            // Initialize Google Sign-In
+            google.accounts.id.initialize({
+                client_id: '397343034720-6rac7k12okii11u2m8h1kou3a3q1gtp1.apps.googleusercontent.com',
+                callback: handleCredentialResponse,
+                auto_select: false,
+                cancel_on_tap_outside: true
+            });
+
+            // Check URL parameters for form display
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            
+            if (mode === 'login') {
+                document.querySelector('.auth-container').style.display = 'block';
+            }
+        };
+
+        async function logout() {
+            try {
+                console.log("Logging out...");
+                // Clear server session
+                await fetch('http://localhost:3000/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                // Clear local storage
+                localStorage.removeItem('user');
+                
+                // Clear Google session
+                google.accounts.id.disableAutoSelect();
+                
+                console.log("Logout successful, reloading page...");
+                // Reload page
+                window.location.href = 'auth.html?mode=login';
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('Error during logout. Please try again.');
+            }
+        }
+
+        // Add a global function for the logout button
+        window.logout = logout;
     </script>
+
+    <style>
+        .requirements {
+            text-align: left;
+            margin: 20px 0;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .requirements ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .requirements li {
+            margin: 5px 0;
+        }
+
+        .requirements li i {
+            margin-right: 8px;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
 </body>
 </html> 
