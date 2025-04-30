@@ -116,30 +116,30 @@
     <main id="content" class="main-content">
         <!-- Hero Banner -->
         <section class="hero-banner">
-            <div class="hero-content">
-                <h1>Join the Ultimate Gaming Experience</h1>
-                <p>Create your account now and get:</p>
+            <div class="hero-content animate fade-in-up">
+                <h1>Experience Risk-Free Gaming</h1>
+                <p>Join our simulation platform and practice your strategies:</p>
                 <div class="benefits-list">
-                    <div class="benefit-item">
-                        <i class="fas fa-gift"></i>
-                        <span>Welcome Bonus up to $1000</span>
-                    </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-percentage"></i>
-                        <span>Daily Cashback Rewards</span>
-                    </div>
-                    <div class="benefit-item">
+                    <div class="benefit-item animate fade-in-left delay-1">
                         <i class="fas fa-coins"></i>
-                        <span>Exclusive VIP Rewards</span>
+                        <span>Virtual Currency to Practice</span>
                     </div>
-                    <div class="benefit-item">
-                        <i class="fas fa-bolt"></i>
-                        <span>Instant Withdrawals</span>
+                    <div class="benefit-item animate fade-in-left delay-2">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Risk-Free Environment</span>
+                    </div>
+                    <div class="benefit-item animate fade-in-right delay-2">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Learn Game Strategies</span>
+                    </div>
+                    <div class="benefit-item animate fade-in-right delay-1">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Real Casino Experience</span>
                     </div>
                 </div>
-                <div class="cta-buttons">
+                <div class="cta-buttons animate fade-in-up delay-3">
                     <a href="#" class="cta-button signup-cta">
-                        <span>Start Playing Now</span>
+                        <span>Start Playing For Fun</span>
                     </a>
                     <div class="login-text">
                         Already have an account? 
@@ -149,12 +149,103 @@
             </div>
         </section>
 
-        <section class="game-banner">
+        <!-- Facts Section -->
+        <section class="facts-section">
+            <div class="facts-container scroll-fade-up">
+                <div class="facts-grid">
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="fact-value">1,000,000</div>
+                        <div class="fact-label">Virtual Credits</div>
+                        <p class="fact-description">Practice with our virtual currency and experience the thrill without any risk</p>
+                    </div>
+                    
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="fact-value">1000x</div>
+                        <div class="fact-label">Max Multiplier</div>
+                        <p class="fact-description">Test different strategies with high multipliers in a safe environment</p>
+                    </div>
+                    
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="fact-value">1M+</div>
+                        <div class="fact-label">Practice Games</div>
+                        <p class="fact-description">Join thousands of players learning and practicing casino games</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits-section">
+            <div class="benefits-container">
+                <div class="benefits-header scroll-fade-up">
+                    <h2 class="benefits-title">Why Choose KeepRolling Simulator</h2>
+                    <p class="benefits-subtitle">Perfect your gaming strategies in a risk-free environment</p>
+                </div>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card scroll-fade-left">
+                        <div class="benefit-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h3 class="benefit-title">Safe Practice Environment</h3>
+                            <p class="benefit-text">Learn and practice casino games without the risk of losing real money</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-card scroll-fade-right">
+                        <div class="benefit-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h3 class="benefit-title">Learn Strategies</h3>
+                            <p class="benefit-text">Develop and test your gaming strategies with virtual currency</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-card scroll-fade-left">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h3 class="benefit-title">Track Progress</h3>
+                            <p class="benefit-text">Monitor your performance and improve your gaming skills over time</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-card scroll-fade-right">
+                        <div class="benefit-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h3 class="benefit-title">Realistic Experience</h3>
+                            <p class="benefit-text">Enjoy the authentic casino atmosphere without financial pressure</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="game-banner scroll-fade-up">
+            <div class="game-banner-container">
             <div class="carousel3d">
                 <div id="carousel"></div>
                 <div class="carousel-hint">
                     <i class="fas fa-mouse"></i>
                     <span>Scroll to explore games</span>
+                        </div>
+                    </div>
+                    <div class="game-description">
+                        
                 </div>
             </div>
         </section>
@@ -166,41 +257,81 @@
     <script src="../games/Towers/towers.js"></script>
     <script src="../assets/js/carousel.js"></script>
     <script>
-        // SPA Loader
+        // Scroll Animation Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.2
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Function to initialize animations
+        function initAnimations() {
+            // Observe all elements with scroll animation classes
+            document.querySelectorAll('.scroll-fade-up, .scroll-fade-left, .scroll-fade-right, .scroll-fade-in, .facts-container, .benefits-header, .fact-card, .benefit-card, .game-banner').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Parallax effect for orbs
+        function initParallax() {
+            window.addEventListener('mousemove', (e) => {
+                const orbs = document.querySelectorAll('.purple-orb');
+                const mouseX = e.clientX / window.innerWidth - 0.5;
+                const mouseY = e.clientY / window.innerHeight - 0.5;
+
+                orbs.forEach(orb => {
+                    const speed = orb.classList.contains('orb-1') ? 30 : 20;
+                    const x = mouseX * speed;
+                    const y = mouseY * speed;
+                    orb.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+                });
+            });
+        }
+
         async function loadContent(page) {
-            // 1) Load game-specific CSS if not index
+            // 1) Stylesheet für Spiele nachladen
             if (page !== 'index.html' && !document.getElementById(page + '-css')) {
                 const link = document.createElement('link');
                 link.rel = 'stylesheet';
-                link.id = page + '-css';
-                link.href = '../assets/css/' + page.replace('.html', '.css');
+                link.id  = page + '-css';
+                link.href= '../assets/css/' + page.replace('.html','.css');
                 document.head.appendChild(link);
                 await new Promise(r => link.onload = r);
             }
             
-            // 2) Fetch HTML fragment
+            // 2) HTML-Fragment laden
             const res = await fetch(page);
-            const text = await res.text();
-            const doc = new DOMParser().parseFromString(text, 'text/html');
-            const main = doc.querySelector('main');
+            const text= await res.text();
+            const doc = new DOMParser().parseFromString(text,'text/html');
+            const main= doc.querySelector('main');
             document.getElementById('content').innerHTML = main.innerHTML;
             
-            // 3) Initialize game or carousel
-            if (page === 'mines.html') new MinesGame();
-            if (page === 'towers.html') new TowersGame();
+            // 3) Initialisierung
+            if (page === 'mines.html')   new MinesGame();
+            if (page === 'towers.html')  new TowersGame();
             if (page === 'index.html') {
-                console.log('Initializing carousel...');
+                console.log('Initializing carousel and animations…');
                 initCarousel();
+                initAnimations();
+                initParallax();
             }
-            
-            // 4) Update active states
+
+            // 4) Active-Link aktualisieren
             document.querySelectorAll('[data-page].active')
                     .forEach(el => el.classList.remove('active'));
             document.querySelectorAll(`[data-page="${page}"]`)
                     .forEach(el => el.classList.add('active'));
         }
 
-        // Click handler
+        // Klick-Handler
         document.body.addEventListener('click', e => {
             const a = e.target.closest('[data-page]');
             if (!a) return;
@@ -210,94 +341,152 @@
             history.pushState({page}, '', `?page=${page}`);
         });
 
-        // Back/Forward navigation
+        // Forward/Back
         window.addEventListener('popstate', e => {
             loadContent(e.state?.page || 'index.html');
         });
 
-        // Initial load
+        // Erster Aufruf
         loadContent(new URLSearchParams(location.search).get('page') || 'index.html');
 
-        // Sidebar toggle
-        document.querySelector('.hamburger-btn').addEventListener('click', function() {
+        // Sidebar-Toggle
+        document.querySelector('.hamburger-btn').addEventListener('click', () => {
             document.querySelector('.sidebar').classList.toggle('expanded');
             document.querySelector('.navbar').classList.toggle('sidebar-expanded');
             document.querySelector('.main-content').classList.toggle('sidebar-expanded');
         });
 
-        // Carousel Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1) Spiele definieren (jetzt 7 Stück)
+        /** 2) initCarousel-Funktion **/ 
+        function initCarousel() {
+            // Spiele-Daten
             const games = [
-                { name:'Mine',     img:'../assets/images/Mines.png'      },
-                { name:'Towers',   img:'../assets/images/Towers.png'    },
-                { name:'Dice',     img:'../assets/images/Dice.png'      },
-                { name:'Roulette', img:'../assets/images/Roulette.png'  },
-                { name:'Coin Flip',img:'../assets/images/CoinFlip.png'  },
-                { name:'Plinko',   img:'../assets/images/Plinko.png'    }
+                { name:'Mines',     img:'../assets/images/Mines.png',     instructions:'Place your bets and navigate through a minefield! Choose how many mines to avoid and reveal safe tiles to multiply your winnings. The fewer safe tiles you need to find, the higher your potential payout!', maxWin:'10,000×', pagePath:'mines.html' },
+                { name:'Towers',    img:'../assets/images/Towers.png',    instructions:'Climb the tower of fortune! Select your path wisely through multiple levels. Each correct choice increases your multiplier, but one wrong move and it\'s game over. How high can you climb?', maxWin:'5,000×',  pagePath:'towers.html' },
+                { name:'Dice',      img:'../assets/images/Dice.png',      instructions:'Coming soon! Roll the dice and test your luck in this classic game of chance.', maxWin:'1,000×',  pagePath:'dice.html' },
+                { name:'Roulette',  img:'../assets/images/Roulette.png',  instructions:'Coming soon! Place your bets on the iconic wheel of fortune.', maxWin:'35×',     pagePath:'roulette.html' },
+                { name:'Coin Flip', img:'../assets/images/CoinFlip.png',  instructions:'Coming soon! A simple yet thrilling game of heads or tails.', maxWin:'2×',      pagePath:'coinflip.html' },
+                { name:'Plinko',    img:'../assets/images/Plinko.png',    instructions:'Coming soon! Drop the ball and watch it bounce its way to prizes.', maxWin:'1,000×',  pagePath:'plinko.html' }
             ];
             const count     = games.length;
-            const radius    = 400;  // Increased radius for better visibility
             const stepAngle = 360 / count;
-            let rotation    = 0, velocity = 0, snapping = false;
-            const friction  = 0.95, minVel = 0.2;
+            let radius      = 400,
+                rotation    = 0,
+                velocity    = 0,
+                snapping    = false,
+                currentGame = 0,
+                friction    = 0.95,
+                minVel      = 0.2;
 
-            const carousel = document.getElementById('carousel');
-            
-            // 2) Karten erzeugen & im Kreis verteilen
+            // DOM‐Container sichern
+            const content   = document.getElementById('content');
+            const banner    = content.querySelector('.game-banner');
+            const carousel3d= banner.querySelector('.carousel3d');
+            const carousel  = carousel3d.querySelector('#carousel');
+            const desc     = banner.querySelector('.game-description');
+
+            function updateDesc(i) {
+                const g = games[i];
+                desc.innerHTML = `
+                    <h2>${g.name}</h2>
+                    <p>${g.instructions}</p>
+                    <div class="game-stats">
+                        <div class="max-win">${g.maxWin}</div>
+                        <div class="max-win-label">Max Win</div>
+                    </div>
+                    <a href="#" data-page="${g.pagePath}" class="play-now-btn">
+                        <span>Play Now</span> <i class="fas fa-play-circle"></i>
+                    </a>`;
+            }
+
+            // Karten initial erzeugen
+            carousel.innerHTML = '';
             games.forEach((g,i) => {
                 const c = document.createElement('div');
                 c.className = 'card';
                 c.style.backgroundImage = `url(${g.img})`;
-                c.textContent = g.name;
-                c.style.transform = `rotateY(${i*stepAngle}deg) translateZ(${radius*0.5+100}px)`;
-                
-                // Add click handler for each card
+                c.style.transform       = `rotateY(${i*stepAngle}deg) translateZ(${radius*0.5+80}px)`;
                 c.addEventListener('click', () => {
-                    // Calculate target rotation to bring this card to front
-                    const targetRotation = -i * stepAngle;
+                    currentGame = i;
+                    rotation    = -i*stepAngle;
+                    velocity    = 0;
                     carousel.style.transition = 'transform 0.6s ease-out';
-                    carousel.style.transform = `rotateY(${targetRotation}deg)`;
-                    rotation = targetRotation;
-                    velocity = 0;
+                    carousel.style.transform  = `rotateY(${rotation}deg)`;
+                    updateDesc(i);
                 });
-                
                 carousel.appendChild(c);
             });
 
-            // 3) Wheel-Event für Inertia
-            window.addEventListener('wheel', e => {
+            // === NEU: Prev/Next-Buttons mit endloser Rotation ===
+            ['prev','next'].forEach(dir => {
+                const btn = document.createElement('button');
+                btn.className = `carousel-nav ${dir}`;
+                btn.innerHTML = dir==='prev'
+                    ? '<i class="fas fa-chevron-left"></i>'
+                    : '<i class="fas fa-chevron-right"></i>';
+                carousel3d.appendChild(btn);
+
+                btn.addEventListener('click', () => {
+                    // 1) rotation immer weiter um ±stepAngle verschieben
+                    rotation += (dir==='prev' ? +stepAngle : -stepAngle);
+
+                    // 2) Transform anwenden
+                    carousel.style.transition = 'transform 0.6s ease-out';
+                    carousel.style.transform  = `rotateY(${rotation}deg)`;
+                    velocity = 0;
+
+                    // 3) Neuen Index aus dem absoluten Winkel berechnen
+                    let norm = -rotation % 360;
+                    if (norm < 0) norm += 360;
+                    currentGame = Math.round(norm / stepAngle) % count;
+
+                    // 4) Beschreibung updaten
+                    updateDesc(currentGame);
+                });
+            });
+
+            // Wheel-Handling
+            carousel3d.addEventListener('wheel', e => {
                 e.preventDefault();
-                if (!snapping) {
-                    velocity += e.deltaY * 0.02;  // Reduced sensitivity for smoother scrolling
-                }
+                if (!snapping) velocity += e.deltaY * 0.02;
             }, { passive:false });
 
-            // 4) Animationsloop + Snap
+            // Animation‐Loop mit Snapping
             function animate() {
-                if (!snapping) {
-                    if (Math.abs(velocity) > 0.001) {
+                if (!snapping && Math.abs(velocity) > 0.001) {
                         rotation += velocity;
                         carousel.style.transform = `rotateY(${rotation}deg)`;
                         velocity *= friction;
+
+                    // aktuellen Index ermitteln
+                    let norm = -rotation % 360;
+                    if (norm < 0) norm += 360;
+                    const idx = Math.round(norm / stepAngle) % count;
+                    if (idx !== currentGame) {
+                        currentGame = idx;
+                        updateDesc(idx);
+                    }
+
+                    // snapping …
                         if (Math.abs(velocity) < minVel) {
                             snapping = true;
                             const target = Math.round(rotation/stepAngle)*stepAngle;
+                        rotation = target;
                             carousel.style.transition = 'transform 0.6s ease-out';
                             carousel.style.transform  = `rotateY(${target}deg)`;
-                            rotation = target;
                             velocity = 0;
                             carousel.addEventListener('transitionend', () => {
                                 carousel.style.transition = '';
                                 snapping = false;
                             }, { once:true });
-                        }
                     }
                 }
                 requestAnimationFrame(animate);
             }
             animate();
-        });
+
+            // Erstbeschreibung
+            updateDesc(0);
+        }
     </script>
 </body>
 </html> 
